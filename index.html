@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #0d1117;
@@ -21,6 +21,8 @@
             --accent-orange: #f0883e;
             --accent-purple: #a371f7;
             --accent-red: #f85149;
+            --accent-yellow: #d29922;
+            --accent-cyan: #39c5cf;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,10 +32,10 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            padding: 2rem;
+            padding: 1.5rem;
         }
         
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 1400px; margin: 0 auto; }
         
         header { text-align: center; margin-bottom: 2rem; }
         
@@ -44,71 +46,25 @@
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
-        .subtitle { color: var(--text-secondary); font-size: 1.1rem; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
         .live-badge { 
             display: inline-block;
             background: var(--accent-green);
             color: white;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             padding: 2px 8px;
             border-radius: 12px;
             margin-left: 8px;
             animation: pulse 2s infinite;
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         
-        .filters {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-        
-        .filter-group {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        
-        .filter-label {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-        
-        .filter-btn {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.85rem;
-        }
-        
-        .filter-btn:hover { border-color: var(--accent-blue); }
-        .filter-btn.active { background: var(--accent-blue); border-color: var(--accent-blue); }
-        
-        select.filter-select {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
-        
-        .stats-grid {
+        /* Stats Grid */
+        .stats-hero {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
         }
@@ -117,135 +73,268 @@
             background: var(--bg-secondary);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 1rem;
+            padding: 1.25rem 1rem;
             text-align: center;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s;
         }
         
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .stat-value { font-size: 1.75rem; font-weight: 700; }
+        .stat-label { color: var(--text-secondary); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+        .stat-card.blue .stat-value { color: var(--accent-blue); }
+        .stat-card.green .stat-value { color: var(--accent-green); }
+        .stat-card.orange .stat-value { color: var(--accent-orange); }
+        .stat-card.purple .stat-value { color: var(--accent-purple); }
+        .stat-card.red .stat-value { color: var(--accent-red); }
+        .stat-card.cyan .stat-value { color: var(--accent-cyan); }
         
-        .stat-value { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
-        .stat-value.blue { color: var(--accent-blue); }
-        .stat-value.green { color: var(--accent-green); }
-        .stat-value.orange { color: var(--accent-orange); }
-        .stat-value.purple { color: var(--accent-purple); }
-        .stat-value.red { color: var(--accent-red); }
-        
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        .chart-container {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        
-        .chart-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .chart-controls {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .chart-wrapper { position: relative; height: 400px; }
-        
-        .zoom-hint {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            text-align: center;
-            margin-top: 0.5rem;
-        }
-        
-        .venues-section {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .venue-list {
+        /* Dashboard Grid */
+        .dashboard {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
         }
         
-        .venue-card {
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+        
+        .card-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-full { grid-column: span 12; }
+        .card-half { grid-column: span 6; }
+        .card-third { grid-column: span 4; }
+        .card-two-thirds { grid-column: span 8; }
+        
+        /* Level Chart */
+        .chart-wrapper { height: 350px; position: relative; }
+        .chart-controls { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        
+        .filter-btn {
             background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover { border-color: var(--accent-blue); }
+        .filter-btn.active { background: var(--accent-blue); border-color: var(--accent-blue); }
+        
+        /* Heatmap */
+        .heatmap-container { overflow-x: auto; }
+        .heatmap {
+            display: flex;
+            gap: 3px;
+            padding: 10px 0;
+        }
+        .heatmap-week {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .heatmap-day {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            background: var(--bg-tertiary);
+        }
+        .heatmap-day.level-1 { background: #0e4429; }
+        .heatmap-day.level-2 { background: #006d32; }
+        .heatmap-day.level-3 { background: #26a641; }
+        .heatmap-day.level-4 { background: #39d353; }
+        .heatmap-legend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        .heatmap-months {
+            display: flex;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            padding-left: 0;
+        }
+        .heatmap-months span { flex: 1; min-width: 52px; }
+        
+        /* Partner List */
+        .partner-list { max-height: 300px; overflow-y: auto; }
+        .partner-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
             border-radius: 8px;
-            padding: 1rem;
+            background: var(--bg-tertiary);
+            margin-bottom: 0.5rem;
+        }
+        .partner-rank {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 0.75rem;
+        }
+        .partner-rank.gold { background: linear-gradient(135deg, #f7b733, #fc4a1a); }
+        .partner-rank.silver { background: linear-gradient(135deg, #bdc3c7, #2c3e50); }
+        .partner-rank.bronze { background: linear-gradient(135deg, #c9790b, #8b5a2b); }
+        .partner-info { flex: 1; }
+        .partner-name { font-weight: 500; font-size: 0.9rem; }
+        .partner-meta { font-size: 0.75rem; color: var(--text-secondary); }
+        .partner-games { font-weight: 600; color: var(--accent-blue); }
+        
+        /* Bar Chart small */
+        .bar-chart { height: 200px; }
+        
+        /* Donut container */
+        .donut-container { height: 200px; position: relative; }
+        
+        /* Win/Loss */
+        .winloss-bar {
+            height: 30px;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            margin: 1rem 0;
+        }
+        .winloss-bar .win { background: var(--accent-green); }
+        .winloss-bar .draw { background: var(--accent-yellow); }
+        .winloss-bar .loss { background: var(--accent-red); }
+        .winloss-stats {
             display: flex;
             justify-content: space-between;
+            font-size: 0.8rem;
+        }
+        .winloss-stats span { display: flex; align-items: center; gap: 0.5rem; }
+        .winloss-dot { width: 10px; height: 10px; border-radius: 50%; }
+        
+        /* Milestones */
+        .milestones-timeline {
+            position: relative;
+            padding-left: 20px;
+        }
+        .milestones-timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+        .milestone {
+            position: relative;
+            padding: 0.75rem 0;
+            padding-left: 1.5rem;
+        }
+        .milestone::before {
+            content: '';
+            position: absolute;
+            left: -14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            border: 2px solid var(--bg-secondary);
+        }
+        .milestone-level { font-weight: 700; color: var(--accent-purple); font-size: 1.1rem; }
+        .milestone-date { font-size: 0.75rem; color: var(--text-secondary); }
+        .milestone-days { font-size: 0.7rem; color: var(--accent-orange); }
+        
+        /* Day distribution */
+        .day-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 120px;
+            padding-top: 20px;
+        }
+        .day-bar-container { 
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             align-items: center;
+            height: 100%;
+        }
+        .day-bar {
+            width: 70%;
+            background: linear-gradient(to top, var(--accent-blue), var(--accent-purple));
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+            min-height: 4px;
+        }
+        .day-bar:hover { opacity: 0.8; }
+        .day-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+        .day-count {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
         }
         
-        .venue-name { font-weight: 500; }
-        .venue-count { color: var(--accent-blue); font-weight: 700; }
+        /* Level distribution */
+        .level-dist { display: flex; gap: 2px; height: 60px; align-items: flex-end; }
+        .level-dist-bar {
+            flex: 1;
+            background: var(--accent-cyan);
+            border-radius: 2px 2px 0 0;
+            min-height: 2px;
+        }
         
         footer {
             text-align: center;
             margin-top: 2rem;
-            padding-top: 2rem;
+            padding-top: 1.5rem;
             border-top: 1px solid var(--border);
             color: var(--text-secondary);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
-        
         footer a { color: var(--accent-blue); text-decoration: none; }
         
-        .loading {
-            text-align: center;
-            padding: 4rem;
-            color: var(--text-secondary);
-        }
-        
+        .loading { text-align: center; padding: 4rem; color: var(--text-secondary); }
         .spinner {
             border: 3px solid var(--border);
             border-top: 3px solid var(--accent-blue);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             animation: spin 1s linear infinite;
             margin: 0 auto 1rem;
         }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @media (max-width: 1024px) {
+            .card-half, .card-third, .card-two-thirds { grid-column: span 12; }
         }
-        
         @media (max-width: 768px) {
             body { padding: 1rem; }
             h1 { font-size: 1.75rem; }
-            .stat-value { font-size: 1.5rem; }
-            .chart-wrapper { height: 300px; }
-            .filters { flex-direction: column; align-items: stretch; }
-            .filter-group { justify-content: center; }
+            .stats-hero { grid-template-columns: repeat(3, 1fr); }
+            .chart-wrapper { height: 280px; }
         }
     </style>
 </head>
@@ -253,333 +342,510 @@
     <div class="container">
         <header>
             <h1>🎾 Dom's Padel Journey <span class="live-badge">LIVE</span></h1>
-            <p class="subtitle">Real-time stats from Playtomic — October 2022 to Present</p>
+            <p class="subtitle">Real-time Stats aus Playtomic • Oktober 2022 bis heute</p>
         </header>
-        
-        <div class="filters">
-            <div class="filter-group">
-                <span class="filter-label">Period:</span>
-                <button class="filter-btn" data-range="30">30d</button>
-                <button class="filter-btn" data-range="90">3mo</button>
-                <button class="filter-btn" data-range="180">6mo</button>
-                <button class="filter-btn" data-range="365">1yr</button>
-                <button class="filter-btn active" data-range="all">All</button>
-            </div>
-            <div class="filter-group">
-                <span class="filter-label">Smoothing:</span>
-                <button class="filter-btn smooth-btn" data-smooth="1">None</button>
-                <button class="filter-btn smooth-btn active" data-smooth="7">7d</button>
-                <button class="filter-btn smooth-btn" data-smooth="30">30d</button>
-            </div>
-            <div class="filter-group">
-                <span class="filter-label">Venue:</span>
-                <select class="filter-select" id="venueFilter">
-                    <option value="all">All Venues</option>
-                </select>
-            </div>
-        </div>
         
         <div id="loading" class="loading">
             <div class="spinner"></div>
-            <p>Loading data from Supabase...</p>
+            <p>Lade Daten...</p>
         </div>
         
         <div id="content" style="display: none;">
-            <div class="stats-grid" id="statsGrid">
-                <!-- Stats populated by JS -->
-            </div>
+            <div class="stats-hero" id="statsHero"></div>
             
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h2 class="chart-title">📈 Level Evolution</h2>
+            <div class="dashboard">
+                <!-- Level Evolution -->
+                <div class="card card-full">
+                    <div class="card-title">📈 Level-Entwicklung</div>
                     <div class="chart-controls">
-                        <button class="filter-btn" id="resetZoom">Reset Zoom</button>
+                        <button class="filter-btn" data-range="30">30 Tage</button>
+                        <button class="filter-btn" data-range="90">3 Monate</button>
+                        <button class="filter-btn" data-range="180">6 Monate</button>
+                        <button class="filter-btn" data-range="365">1 Jahr</button>
+                        <button class="filter-btn active" data-range="all">Alles</button>
+                        <span style="flex:1"></span>
+                        <button class="filter-btn" id="resetZoom">🔍 Reset Zoom</button>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="levelChart"></canvas>
                     </div>
                 </div>
-                <div class="chart-wrapper">
-                    <canvas id="levelChart"></canvas>
+                
+                <!-- Activity Heatmap -->
+                <div class="card card-full">
+                    <div class="card-title">🔥 Aktivität (letztes Jahr)</div>
+                    <div class="heatmap-months" id="heatmapMonths"></div>
+                    <div class="heatmap-container">
+                        <div class="heatmap" id="heatmap"></div>
+                    </div>
+                    <div class="heatmap-legend">
+                        <span>Weniger</span>
+                        <div class="heatmap-day"></div>
+                        <div class="heatmap-day level-1"></div>
+                        <div class="heatmap-day level-2"></div>
+                        <div class="heatmap-day level-3"></div>
+                        <div class="heatmap-day level-4"></div>
+                        <span>Mehr</span>
+                    </div>
                 </div>
-                <p class="zoom-hint">🔍 Scroll to zoom • Drag to pan • Double-click to reset</p>
-            </div>
-            
-            <div class="venues-section">
-                <h2 class="chart-title">📍 Venues</h2>
-                <div class="venue-list" id="venueList">
-                    <!-- Venues populated by JS -->
+                
+                <!-- Top Partners -->
+                <div class="card card-half">
+                    <div class="card-title">👥 Top Spielpartner</div>
+                    <div class="partner-list" id="partnerList"></div>
+                </div>
+                
+                <!-- Games per Month -->
+                <div class="card card-half">
+                    <div class="card-title">📅 Spiele pro Monat</div>
+                    <div class="bar-chart">
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Win/Loss -->
+                <div class="card card-third">
+                    <div class="card-title">🏆 Ergebnisse</div>
+                    <div id="winlossContainer"></div>
+                </div>
+                
+                <!-- Day of Week -->
+                <div class="card card-third">
+                    <div class="card-title">📆 Wochentage</div>
+                    <div class="day-bars" id="dayBars"></div>
+                </div>
+                
+                <!-- Level Milestones -->
+                <div class="card card-third">
+                    <div class="card-title">🎯 Meilensteine</div>
+                    <div class="milestones-timeline" id="milestones"></div>
+                </div>
+                
+                <!-- Opponent Level Distribution -->
+                <div class="card card-half">
+                    <div class="card-title">⚔️ Gegner-Level Verteilung</div>
+                    <div class="donut-container">
+                        <canvas id="opponentChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Venues -->
+                <div class="card card-half">
+                    <div class="card-title">📍 Venues</div>
+                    <div class="donut-container">
+                        <canvas id="venueChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
         
         <footer>
-            <p>Data synced from <a href="https://playtomic.io" target="_blank">Playtomic</a> via Supabase</p>
-            <p>Auto-updates weekly • Built with ❤️ by Fred</p>
+            <p>Daten aus <a href="https://playtomic.io" target="_blank">Playtomic</a> via Supabase • Auto-Sync wöchentlich</p>
+            <p>Built with ❤️ by Fred</p>
         </footer>
     </div>
     
     <script>
         const SUPABASE_URL = 'https://wlcxgdxpzbiqbazfvtsu.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsY3hnZHhwemJpcWJhemZ2dHN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMTY4NTEsImV4cCI6MjA4NjY5Mjg1MX0.u-8kWxdIDZI_1O9XMT-2-WtgDvB7vlY7Lx3EMIXPHvU';
+        const DOM_USER_ID = '3288476';
         
         let allData = [];
-        let chart = null;
+        let levelChart = null;
         let currentRange = 'all';
-        let currentSmooth = 7;
-        let currentVenue = 'all';
         
         async function fetchData() {
             const response = await fetch(
-                `${SUPABASE_URL}/rest/v1/padel_matches?select=match_date,level,venue&order=match_date.asc`,
-                {
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`
-                    }
-                }
+                `${SUPABASE_URL}/rest/v1/padel_matches?select=*&order=match_date.asc`,
+                { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
             );
             return await response.json();
         }
         
-        function filterData(data, range, venue) {
-            let filtered = [...data];
-            
-            // Filter by venue
-            if (venue !== 'all') {
-                filtered = filtered.filter(d => d.venue === venue);
-            }
-            
-            // Filter by date range
-            if (range !== 'all') {
-                const days = parseInt(range);
-                const cutoff = new Date();
-                cutoff.setDate(cutoff.getDate() - days);
-                filtered = filtered.filter(d => new Date(d.match_date) >= cutoff);
-            }
-            
-            return filtered;
-        }
-        
-        function smoothData(data, window) {
-            if (window <= 1) return data;
-            
-            return data.map((d, i) => {
-                const start = Math.max(0, i - Math.floor(window / 2));
-                const end = Math.min(data.length, i + Math.ceil(window / 2));
-                const slice = data.slice(start, end);
-                const avg = slice.reduce((sum, x) => sum + x.level, 0) / slice.length;
-                return { ...d, level: avg };
-            });
-        }
-        
-        function calculateStats(data) {
-            if (data.length === 0) return {};
-            
+        // Stats Hero
+        function renderStatsHero(data) {
             const levels = data.map(d => d.level);
             const current = levels[levels.length - 1];
             const peak = Math.max(...levels);
             const lowest = Math.min(...levels);
-            const first = levels[0];
-            const growth = ((current - first) / first * 100).toFixed(1);
+            const growth = ((current - levels[0]) / levels[0] * 100).toFixed(0);
             
-            return {
-                matches: data.length,
-                current: current.toFixed(2),
-                peak: peak.toFixed(2),
-                lowest: lowest.toFixed(2),
-                growth: growth
-            };
-        }
-        
-        function updateStats(stats) {
-            document.getElementById('statsGrid').innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-value blue">${stats.matches}</div>
-                    <div class="stat-label">Matches</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value green">${stats.current}</div>
-                    <div class="stat-label">Current Level</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value purple">${stats.peak}</div>
-                    <div class="stat-label">Peak Level</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value red">${stats.lowest}</div>
-                    <div class="stat-label">Lowest Level</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value orange">${stats.growth > 0 ? '+' : ''}${stats.growth}%</div>
-                    <div class="stat-label">Growth</div>
-                </div>
+            // Calculate streak
+            const today = new Date();
+            let streak = 0;
+            const dates = data.map(d => d.match_date).reverse();
+            
+            document.getElementById('statsHero').innerHTML = `
+                <div class="stat-card blue"><div class="stat-value">${data.length}</div><div class="stat-label">Matches</div></div>
+                <div class="stat-card green"><div class="stat-value">${current.toFixed(2)}</div><div class="stat-label">Aktuelles Level</div></div>
+                <div class="stat-card purple"><div class="stat-value">${peak.toFixed(2)}</div><div class="stat-label">Peak Level</div></div>
+                <div class="stat-card red"><div class="stat-value">${lowest.toFixed(2)}</div><div class="stat-label">Tiefstes Level</div></div>
+                <div class="stat-card orange"><div class="stat-value">+${growth}%</div><div class="stat-label">Wachstum</div></div>
+                <div class="stat-card cyan"><div class="stat-value">${getUniquePartners(data)}</div><div class="stat-label">Spielpartner</div></div>
             `;
         }
         
-        function updateVenues(data) {
-            const venues = {};
-            data.forEach(d => {
-                venues[d.venue] = (venues[d.venue] || 0) + 1;
+        function getUniquePartners(data) {
+            const partners = new Set();
+            data.forEach(m => {
+                (m.players || []).forEach(p => {
+                    if (p.user_id !== DOM_USER_ID) partners.add(p.user_id);
+                });
+            });
+            return partners.size;
+        }
+        
+        // Level Chart
+        function renderLevelChart(data) {
+            const ctx = document.getElementById('levelChart').getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+            gradient.addColorStop(0, 'rgba(88, 166, 255, 0.3)');
+            gradient.addColorStop(1, 'rgba(88, 166, 255, 0)');
+            
+            if (levelChart) levelChart.destroy();
+            
+            levelChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.match_date),
+                    datasets: [{
+                        label: 'Level',
+                        data: data.map(d => d.level),
+                        borderColor: '#58a6ff',
+                        backgroundColor: gradient,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: data.length > 100 ? 1 : 3,
+                        pointHoverRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { intersect: false, mode: 'index' },
+                    plugins: {
+                        legend: { display: false },
+                        zoom: { zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' }, pan: { enabled: true, mode: 'x' } }
+                    },
+                    scales: {
+                        x: { type: 'time', time: { unit: 'month' }, grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e' } },
+                        y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e' } }
+                    }
+                }
+            });
+        }
+        
+        // Heatmap
+        function renderHeatmap(data) {
+            const heatmap = document.getElementById('heatmap');
+            const monthsDiv = document.getElementById('heatmapMonths');
+            const today = new Date();
+            const oneYearAgo = new Date(today);
+            oneYearAgo.setFullYear(today.getFullYear() - 1);
+            
+            // Count games per day
+            const gameCounts = {};
+            data.forEach(m => { gameCounts[m.match_date] = (gameCounts[m.match_date] || 0) + 1; });
+            
+            // Generate weeks
+            let html = '';
+            let current = new Date(oneYearAgo);
+            current.setDate(current.getDate() - current.getDay()); // Start on Sunday
+            
+            const months = [];
+            let lastMonth = -1;
+            
+            while (current <= today) {
+                let weekHtml = '<div class="heatmap-week">';
+                for (let d = 0; d < 7; d++) {
+                    const dateStr = current.toISOString().split('T')[0];
+                    const count = gameCounts[dateStr] || 0;
+                    let level = '';
+                    if (count === 1) level = 'level-1';
+                    else if (count === 2) level = 'level-2';
+                    else if (count === 3) level = 'level-3';
+                    else if (count >= 4) level = 'level-4';
+                    
+                    const title = `${dateStr}: ${count} Spiele`;
+                    weekHtml += `<div class="heatmap-day ${level}" title="${title}"></div>`;
+                    
+                    if (current.getMonth() !== lastMonth && current > oneYearAgo) {
+                        months.push({ month: current.toLocaleString('de', { month: 'short' }), pos: months.length });
+                        lastMonth = current.getMonth();
+                    }
+                    current.setDate(current.getDate() + 1);
+                }
+                weekHtml += '</div>';
+                html += weekHtml;
+            }
+            
+            heatmap.innerHTML = html;
+            monthsDiv.innerHTML = months.map(m => `<span>${m.month}</span>`).join('');
+        }
+        
+        // Partners
+        function renderPartners(data) {
+            const partners = {};
+            data.forEach(m => {
+                (m.players || []).forEach(p => {
+                    if (p.user_id !== DOM_USER_ID && p.name) {
+                        if (!partners[p.user_id]) {
+                            partners[p.user_id] = { name: p.name, games: 0, levels: [] };
+                        }
+                        partners[p.user_id].games++;
+                        if (p.level) partners[p.user_id].levels.push(p.level);
+                    }
+                });
             });
             
-            const sorted = Object.entries(venues).sort((a, b) => b[1] - a[1]);
+            const sorted = Object.values(partners).sort((a, b) => b.games - a.games).slice(0, 10);
             
-            // Update venue filter
-            const select = document.getElementById('venueFilter');
-            select.innerHTML = '<option value="all">All Venues</option>' + 
-                sorted.map(([name, count]) => `<option value="${name}">${name} (${count})</option>`).join('');
-            select.value = currentVenue;
+            document.getElementById('partnerList').innerHTML = sorted.map((p, i) => {
+                const avgLevel = p.levels.length ? (p.levels.reduce((a,b) => a+b, 0) / p.levels.length).toFixed(2) : '?';
+                const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+                return `
+                    <div class="partner-item">
+                        <div class="partner-rank ${rankClass}">${i + 1}</div>
+                        <div class="partner-info">
+                            <div class="partner-name">${p.name}</div>
+                            <div class="partner-meta">⭐ ${avgLevel} avg level</div>
+                        </div>
+                        <div class="partner-games">${p.games} 🎾</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Monthly Chart
+        function renderMonthlyChart(data) {
+            const months = {};
+            data.forEach(m => {
+                const month = m.match_date.substring(0, 7);
+                months[month] = (months[month] || 0) + 1;
+            });
             
-            // Update venue list
-            document.getElementById('venueList').innerHTML = sorted.slice(0, 6).map(([name, count]) => `
-                <div class="venue-card">
-                    <span class="venue-name">${name}</span>
-                    <span class="venue-count">${count} matches</span>
+            const labels = Object.keys(months).slice(-12);
+            const values = labels.map(l => months[l]);
+            
+            new Chart(document.getElementById('monthlyChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels.map(l => new Date(l + '-01').toLocaleString('de', { month: 'short', year: '2-digit' })),
+                    datasets: [{
+                        data: values,
+                        backgroundColor: 'rgba(88, 166, 255, 0.7)',
+                        borderRadius: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: '#8b949e', font: { size: 10 } } },
+                        y: { grid: { color: 'rgba(48,54,61,0.5)' }, ticks: { color: '#8b949e' } }
+                    }
+                }
+            });
+        }
+        
+        // Win/Loss
+        function renderWinLoss(data) {
+            let wins = 0, losses = 0, draws = 0, noResult = 0;
+            
+            data.forEach(m => {
+                const results = m.results || [];
+                const domTeam = (m.players || []).findIndex(p => p.user_id === DOM_USER_ID) < 2 ? '0' : '1';
+                
+                let domSets = 0, oppSets = 0;
+                results.forEach(set => {
+                    if (set.scores && set.scores.length === 2) {
+                        const domScore = set.scores.find(s => s.team_id === domTeam)?.score;
+                        const oppScore = set.scores.find(s => s.team_id !== domTeam)?.score;
+                        if (domScore != null && oppScore != null) {
+                            if (domScore > oppScore) domSets++;
+                            else if (oppScore > domScore) oppSets++;
+                        }
+                    }
+                });
+                
+                if (domSets + oppSets === 0) noResult++;
+                else if (domSets > oppSets) wins++;
+                else if (oppSets > domSets) losses++;
+                else draws++;
+            });
+            
+            const total = wins + losses + draws;
+            const winPct = total > 0 ? (wins / total * 100).toFixed(0) : 0;
+            
+            document.getElementById('winlossContainer').innerHTML = total > 0 ? `
+                <div style="text-align:center;font-size:2rem;font-weight:700;color:var(--accent-green)">${winPct}%</div>
+                <div style="text-align:center;font-size:0.75rem;color:var(--text-secondary);margin-bottom:1rem">Win-Rate</div>
+                <div class="winloss-bar">
+                    <div class="win" style="width:${wins/total*100}%"></div>
+                    <div class="draw" style="width:${draws/total*100}%"></div>
+                    <div class="loss" style="width:${losses/total*100}%"></div>
+                </div>
+                <div class="winloss-stats">
+                    <span><div class="winloss-dot" style="background:var(--accent-green)"></div>${wins} Siege</span>
+                    <span><div class="winloss-dot" style="background:var(--accent-yellow)"></div>${draws} Unent.</span>
+                    <span><div class="winloss-dot" style="background:var(--accent-red)"></div>${losses} Niedr.</span>
+                </div>
+                <div style="text-align:center;font-size:0.7rem;color:var(--text-secondary);margin-top:0.5rem">${noResult} Spiele ohne Ergebnis</div>
+            ` : `<div style="text-align:center;color:var(--text-secondary)">Keine Ergebnisse verfügbar</div>`;
+        }
+        
+        // Day of Week
+        function renderDayOfWeek(data) {
+            const days = [0, 0, 0, 0, 0, 0, 0];
+            const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+            
+            data.forEach(m => {
+                const day = new Date(m.match_date).getDay();
+                days[day]++;
+            });
+            
+            const max = Math.max(...days);
+            
+            document.getElementById('dayBars').innerHTML = days.map((count, i) => `
+                <div class="day-bar-container">
+                    <div class="day-count">${count}</div>
+                    <div class="day-bar" style="height:${max > 0 ? count/max*100 : 0}%"></div>
+                    <div class="day-label">${dayNames[i]}</div>
                 </div>
             `).join('');
         }
         
-        function updateChart(data) {
-            const smoothed = smoothData(data, currentSmooth);
+        // Milestones
+        function renderMilestones(data) {
+            const milestones = [1.0, 1.5, 2.0, 2.5];
+            const reached = [];
             
-            // Calculate trend
-            const xValues = smoothed.map((_, i) => i);
-            const yValues = smoothed.map(d => d.level);
-            const n = xValues.length;
-            if (n < 2) return;
+            milestones.forEach(target => {
+                const match = data.find(m => m.level >= target);
+                if (match) reached.push({ level: target, date: match.match_date });
+            });
             
-            const sumX = xValues.reduce((a, b) => a + b, 0);
-            const sumY = yValues.reduce((a, b) => a + b, 0);
-            const sumXY = xValues.reduce((acc, x, i) => acc + x * yValues[i], 0);
-            const sumXX = xValues.reduce((acc, x) => acc + x * x, 0);
-            const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-            const intercept = (sumY - slope * sumX) / n;
-            const trendData = xValues.map(x => slope * x + intercept);
+            // Calculate days between
+            for (let i = 1; i < reached.length; i++) {
+                const prev = new Date(reached[i-1].date);
+                const curr = new Date(reached[i].date);
+                reached[i].days = Math.round((curr - prev) / (1000 * 60 * 60 * 24));
+            }
             
-            if (chart) {
-                chart.data.labels = smoothed.map(d => d.match_date);
-                chart.data.datasets[0].data = smoothed.map(d => d.level);
-                chart.data.datasets[1].data = trendData;
-                chart.update();
-            } else {
-                const ctx = document.getElementById('levelChart').getContext('2d');
-                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, 'rgba(88, 166, 255, 0.3)');
-                gradient.addColorStop(1, 'rgba(88, 166, 255, 0)');
-                
-                chart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: smoothed.map(d => d.match_date),
-                        datasets: [
-                            {
-                                label: 'Level',
-                                data: smoothed.map(d => d.level),
-                                borderColor: '#58a6ff',
-                                backgroundColor: gradient,
-                                fill: true,
-                                tension: 0.3,
-                                pointRadius: currentRange === 'all' ? 1 : 3,
-                                pointHoverRadius: 6,
-                            },
-                            {
-                                label: 'Trend',
-                                data: trendData,
-                                borderColor: '#f0883e',
-                                borderDash: [5, 5],
-                                borderWidth: 2,
-                                pointRadius: 0,
-                                fill: false,
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        interaction: { intersect: false, mode: 'index' },
-                        plugins: {
-                            legend: { labels: { color: '#8b949e' } },
-                            tooltip: {
-                                backgroundColor: '#161b22',
-                                borderColor: '#30363d',
-                                borderWidth: 1,
-                                titleColor: '#f0f6fc',
-                                bodyColor: '#8b949e',
-                            },
-                            zoom: {
-                                zoom: {
-                                    wheel: { enabled: true },
-                                    pinch: { enabled: true },
-                                    mode: 'x',
-                                },
-                                pan: {
-                                    enabled: true,
-                                    mode: 'x',
-                                }
-                            }
-                        },
-                        scales: {
-                            x: {
-                                type: 'time',
-                                time: { unit: currentRange === 'all' ? 'quarter' : 'week' },
-                                grid: { color: 'rgba(48, 54, 61, 0.5)' },
-                                ticks: { color: '#8b949e', maxTicksLimit: 10 }
-                            },
-                            y: {
-                                grid: { color: 'rgba(48, 54, 61, 0.5)' },
-                                ticks: { color: '#8b949e' }
-                            }
-                        }
+            document.getElementById('milestones').innerHTML = reached.map((m, i) => `
+                <div class="milestone">
+                    <div class="milestone-level">Level ${m.level.toFixed(1)}</div>
+                    <div class="milestone-date">${new Date(m.date).toLocaleDateString('de')}</div>
+                    ${m.days ? `<div class="milestone-days">+${m.days} Tage</div>` : ''}
+                </div>
+            `).join('');
+        }
+        
+        // Opponent Levels
+        function renderOpponentLevels(data) {
+            const levels = { 'Unter 1.5': 0, '1.5-2.0': 0, '2.0-2.5': 0, '2.5-3.0': 0, 'Über 3.0': 0 };
+            
+            data.forEach(m => {
+                (m.players || []).forEach(p => {
+                    if (p.user_id !== DOM_USER_ID && p.level) {
+                        if (p.level < 1.5) levels['Unter 1.5']++;
+                        else if (p.level < 2.0) levels['1.5-2.0']++;
+                        else if (p.level < 2.5) levels['2.0-2.5']++;
+                        else if (p.level < 3.0) levels['2.5-3.0']++;
+                        else levels['Über 3.0']++;
                     }
                 });
-            }
+            });
+            
+            new Chart(document.getElementById('opponentChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(levels),
+                    datasets: [{
+                        data: Object.values(levels),
+                        backgroundColor: ['#f85149', '#f0883e', '#d29922', '#238636', '#a371f7'],
+                        borderWidth: 0,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 12 } }
+                    }
+                }
+            });
         }
         
-        function refresh() {
-            const filtered = filterData(allData, currentRange, currentVenue);
-            const stats = calculateStats(filtered);
-            updateStats(stats);
-            updateChart(filtered);
+        // Venues
+        function renderVenues(data) {
+            const venues = {};
+            data.forEach(m => { venues[m.venue] = (venues[m.venue] || 0) + 1; });
+            
+            const sorted = Object.entries(venues).sort((a, b) => b[1] - a[1]).slice(0, 6);
+            
+            new Chart(document.getElementById('venueChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: sorted.map(v => v[0].length > 20 ? v[0].substring(0, 20) + '...' : v[0]),
+                    datasets: [{
+                        data: sorted.map(v => v[1]),
+                        backgroundColor: ['#58a6ff', '#a371f7', '#39c5cf', '#f0883e', '#238636', '#f85149'],
+                        borderWidth: 0,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { color: '#8b949e', font: { size: 10 }, boxWidth: 12 } }
+                    }
+                }
+            });
         }
         
-        // Event listeners
+        // Filter handlers
         document.querySelectorAll('.filter-btn[data-range]').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.filter-btn[data-range]').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentRange = btn.dataset.range;
-                refresh();
+                
+                let filtered = allData;
+                if (currentRange !== 'all') {
+                    const days = parseInt(currentRange);
+                    const cutoff = new Date();
+                    cutoff.setDate(cutoff.getDate() - days);
+                    filtered = allData.filter(d => new Date(d.match_date) >= cutoff);
+                }
+                renderLevelChart(filtered);
             });
-        });
-        
-        document.querySelectorAll('.smooth-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.smooth-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentSmooth = parseInt(btn.dataset.smooth);
-                refresh();
-            });
-        });
-        
-        document.getElementById('venueFilter').addEventListener('change', (e) => {
-            currentVenue = e.target.value;
-            refresh();
         });
         
         document.getElementById('resetZoom').addEventListener('click', () => {
-            if (chart) chart.resetZoom();
+            if (levelChart) levelChart.resetZoom();
         });
         
-        // Initialize
+        // Init
         async function init() {
             try {
                 allData = await fetchData();
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
-                updateVenues(allData);
-                refresh();
+                
+                renderStatsHero(allData);
+                renderLevelChart(allData);
+                renderHeatmap(allData);
+                renderPartners(allData);
+                renderMonthlyChart(allData);
+                renderWinLoss(allData);
+                renderDayOfWeek(allData);
+                renderMilestones(allData);
+                renderOpponentLevels(allData);
+                renderVenues(allData);
             } catch (error) {
-                document.getElementById('loading').innerHTML = `
-                    <p style="color: var(--accent-red);">Error loading data: ${error.message}</p>
-                `;
+                document.getElementById('loading').innerHTML = `<p style="color:var(--accent-red)">Fehler: ${error.message}</p>`;
             }
         }
         
