@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎾 Dom's Padel Journey</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border: #30363d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #238636;
+            --accent-orange: #f0883e;
+            --accent-purple: #a371f7;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-value.blue { color: var(--accent-blue); }
+        .stat-value.green { color: var(--accent-green); }
+        .stat-value.orange { color: var(--accent-orange); }
+        .stat-value.purple { color: var(--accent-purple); }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .chart-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+        
+        .milestones {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+        
+        .milestone-list {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .milestone {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+        }
+        
+        .milestone-icon {
+            font-size: 1.5rem;
+        }
+        
+        .milestone-content {
+            flex: 1;
+        }
+        
+        .milestone-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .milestone-date {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        .milestone-level {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            h1 { font-size: 1.75rem; }
+            .stat-value { font-size: 2rem; }
+            .chart-wrapper { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎾 Dom's Padel Journey</h1>
+            <p class="subtitle">Tracking progress on Playtomic since September 2025</p>
+        </header>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value blue">47</div>
+                <div class="stat-label">Games Played</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value green">2.55</div>
+                <div class="stat-label">Current Level</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value orange">+10.9%</div>
+                <div class="stat-label">Improvement</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value purple">2.65</div>
+                <div class="stat-label">Peak Level</div>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <h2 class="chart-title">📈 Level Evolution</h2>
+            <div class="chart-wrapper">
+                <canvas id="levelChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="milestones">
+            <h2 class="chart-title">🏆 Milestones</h2>
+            <div class="milestone-list">
+                <div class="milestone">
+                    <span class="milestone-icon">🎯</span>
+                    <div class="milestone-content">
+                        <div class="milestone-title">Journey Begins</div>
+                        <div class="milestone-date">September 30, 2025</div>
+                    </div>
+                    <div class="milestone-level">2.30</div>
+                </div>
+                <div class="milestone">
+                    <span class="milestone-icon">📈</span>
+                    <div class="milestone-content">
+                        <div class="milestone-title">Breaking 2.4</div>
+                        <div class="milestone-date">October 22, 2025</div>
+                    </div>
+                    <div class="milestone-level">2.39</div>
+                </div>
+                <div class="milestone">
+                    <span class="milestone-icon">🎄</span>
+                    <div class="milestone-content">
+                        <div class="milestone-title">Holiday Surge</div>
+                        <div class="milestone-date">December 30, 2025</div>
+                    </div>
+                    <div class="milestone-level">2.49</div>
+                </div>
+                <div class="milestone">
+                    <span class="milestone-icon">🚀</span>
+                    <div class="milestone-content">
+                        <div class="milestone-title">All-Time High!</div>
+                        <div class="milestone-date">January 9, 2026</div>
+                    </div>
+                    <div class="milestone-level">2.65</div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Data synced from <a href="https://playtomic.io" target="_blank">Playtomic</a> • Last updated: February 15, 2026</p>
+            <p>Built with ❤️ by Fred</p>
+        </footer>
+    </div>
+    
+    <script>
+        const data = [
+            {date: "2025-09-30", level: 2.3},
+            {date: "2025-10-02", level: 2.3},
+            {date: "2025-10-03", level: 2.3},
+            {date: "2025-10-06", level: 2.3},
+            {date: "2025-10-07", level: 2.3},
+            {date: "2025-10-09", level: 2.26},
+            {date: "2025-10-13", level: 2.3},
+            {date: "2025-10-14", level: 2.35},
+            {date: "2025-10-16", level: 2.32},
+            {date: "2025-10-20", level: 2.32},
+            {date: "2025-10-21", level: 2.32},
+            {date: "2025-10-22", level: 2.39},
+            {date: "2025-10-23", level: 2.39},
+            {date: "2025-10-27", level: 2.35},
+            {date: "2025-10-30", level: 2.32},
+            {date: "2025-11-03", level: 2.32},
+            {date: "2025-11-04", level: 2.32},
+            {date: "2025-11-05", level: 2.29},
+            {date: "2025-11-13", level: 2.29},
+            {date: "2025-11-18", level: 2.31},
+            {date: "2025-11-20", level: 2.31},
+            {date: "2025-11-25", level: 2.31},
+            {date: "2025-11-27", level: 2.3},
+            {date: "2025-12-03", level: 2.36},
+            {date: "2025-12-04", level: 2.34},
+            {date: "2025-12-08", level: 2.38},
+            {date: "2025-12-09", level: 2.38},
+            {date: "2025-12-15", level: 2.36},
+            {date: "2025-12-16", level: 2.36},
+            {date: "2025-12-18", level: 2.36},
+            {date: "2025-12-30", level: 2.49},
+            {date: "2026-01-06", level: 2.49},
+            {date: "2026-01-07", level: 2.49},
+            {date: "2026-01-08", level: 2.54},
+            {date: "2026-01-09", level: 2.65},
+            {date: "2026-01-13", level: 2.61},
+            {date: "2026-01-14", level: 2.65},
+            {date: "2026-01-16", level: 2.65},
+            {date: "2026-01-20", level: 2.65},
+            {date: "2026-01-22", level: 2.61},
+            {date: "2026-01-28", level: 2.61},
+            {date: "2026-01-29", level: 2.61},
+            {date: "2026-01-30", level: 2.55},
+            {date: "2026-02-02", level: 2.55},
+            {date: "2026-02-03", level: 2.55},
+            {date: "2026-02-09", level: 2.55},
+            {date: "2026-02-12", level: 2.55},
+        ];
+        
+        const ctx = document.getElementById('levelChart').getContext('2d');
+        
+        // Calculate trend line
+        const xValues = data.map((_, i) => i);
+        const yValues = data.map(d => d.level);
+        const n = xValues.length;
+        const sumX = xValues.reduce((a, b) => a + b, 0);
+        const sumY = yValues.reduce((a, b) => a + b, 0);
+        const sumXY = xValues.reduce((acc, x, i) => acc + x * yValues[i], 0);
+        const sumXX = xValues.reduce((acc, x) => acc + x * x, 0);
+        const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+        const intercept = (sumY - slope * sumX) / n;
+        const trendData = xValues.map(x => slope * x + intercept);
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.map(d => d.date),
+                datasets: [
+                    {
+                        label: 'Level',
+                        data: data.map(d => d.level),
+                        borderColor: '#58a6ff',
+                        backgroundColor: 'rgba(88, 166, 255, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#58a6ff',
+                        pointBorderWidth: 2,
+                        pointHoverRadius: 6,
+                    },
+                    {
+                        label: 'Trend',
+                        data: trendData,
+                        borderColor: '#f0883e',
+                        borderDash: [5, 5],
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: '#8b949e' }
+                    },
+                    tooltip: {
+                        backgroundColor: '#161b22',
+                        borderColor: '#30363d',
+                        borderWidth: 1,
+                        titleColor: '#f0f6fc',
+                        bodyColor: '#8b949e',
+                        callbacks: {
+                            title: (items) => {
+                                const date = new Date(items[0].label);
+                                return date.toLocaleDateString('en-US', { 
+                                    weekday: 'short', 
+                                    year: 'numeric', 
+                                    month: 'short', 
+                                    day: 'numeric' 
+                                });
+                            },
+                            label: (item) => {
+                                if (item.datasetIndex === 0) {
+                                    return `Level: ${item.raw.toFixed(2)}`;
+                                }
+                                return null;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'month',
+                            displayFormats: { month: 'MMM yyyy' }
+                        },
+                        grid: { color: 'rgba(48, 54, 61, 0.5)' },
+                        ticks: { color: '#8b949e' }
+                    },
+                    y: {
+                        min: 2.1,
+                        max: 2.8,
+                        grid: { color: 'rgba(48, 54, 61, 0.5)' },
+                        ticks: { color: '#8b949e' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
