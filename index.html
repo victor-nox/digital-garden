@@ -19,13 +19,10 @@
             --accent-green: #238636;
             --accent-orange: #f0883e;
             --accent-purple: #a371f7;
+            --accent-red: #f85149;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -35,15 +32,9 @@
             padding: 2rem;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1200px; margin: 0 auto; }
         
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
+        header { text-align: center; margin-bottom: 3rem; }
         
         h1 {
             font-size: 2.5rem;
@@ -55,15 +46,12 @@
             background-clip: text;
         }
         
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; }
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
             margin-bottom: 2rem;
         }
         
@@ -71,7 +59,7 @@
             background: var(--bg-secondary);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 1.25rem;
             text-align: center;
             transition: transform 0.2s, box-shadow 0.2s;
         }
@@ -81,20 +69,16 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.3);
         }
         
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-        
+        .stat-value { font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem; }
         .stat-value.blue { color: var(--accent-blue); }
         .stat-value.green { color: var(--accent-green); }
         .stat-value.orange { color: var(--accent-orange); }
         .stat-value.purple { color: var(--accent-purple); }
+        .stat-value.red { color: var(--accent-red); }
         
         .stat-label {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -116,10 +100,7 @@
             gap: 0.5rem;
         }
         
-        .chart-wrapper {
-            position: relative;
-            height: 400px;
-        }
+        .chart-wrapper { position: relative; height: 400px; }
         
         .milestones {
             background: var(--bg-secondary);
@@ -128,10 +109,7 @@
             padding: 2rem;
         }
         
-        .milestone-list {
-            display: grid;
-            gap: 1rem;
-        }
+        .milestone-list { display: grid; gap: 1rem; }
         
         .milestone {
             display: flex;
@@ -142,29 +120,24 @@
             border-radius: 8px;
         }
         
-        .milestone-icon {
-            font-size: 1.5rem;
-        }
+        .milestone-icon { font-size: 1.5rem; }
+        .milestone-content { flex: 1; }
+        .milestone-title { font-weight: 600; margin-bottom: 0.25rem; }
+        .milestone-date { color: var(--text-secondary); font-size: 0.85rem; }
+        .milestone-level { font-size: 1.25rem; font-weight: 700; color: var(--accent-blue); }
         
-        .milestone-content {
-            flex: 1;
-        }
-        
-        .milestone-title {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-        
-        .milestone-date {
+        .journey-text {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            line-height: 1.7;
             color: var(--text-secondary);
-            font-size: 0.85rem;
         }
         
-        .milestone-level {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--accent-blue);
-        }
+        .journey-text h3 { color: var(--text-primary); margin-bottom: 1rem; }
+        .journey-text strong { color: var(--text-primary); }
         
         footer {
             text-align: center;
@@ -175,15 +148,12 @@
             font-size: 0.85rem;
         }
         
-        footer a {
-            color: var(--accent-blue);
-            text-decoration: none;
-        }
+        footer a { color: var(--accent-blue); text-decoration: none; }
         
         @media (max-width: 768px) {
             body { padding: 1rem; }
             h1 { font-size: 1.75rem; }
-            .stat-value { font-size: 2rem; }
+            .stat-value { font-size: 1.5rem; }
             .chart-wrapper { height: 300px; }
         }
     </style>
@@ -192,61 +162,91 @@
     <div class="container">
         <header>
             <h1>🎾 Dom's Padel Journey</h1>
-            <p class="subtitle">Tracking progress on Playtomic since September 2025</p>
+            <p class="subtitle">From complete beginner to competitive player — October 2022 to Present</p>
         </header>
         
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-value blue">47</div>
-                <div class="stat-label">Games Played</div>
+                <div class="stat-value blue">538</div>
+                <div class="stat-label">Matches Played</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value green">2.55</div>
                 <div class="stat-label">Current Level</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value orange">+10.9%</div>
-                <div class="stat-label">Improvement</div>
+                <div class="stat-value orange">+280%</div>
+                <div class="stat-label">Level Growth</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value purple">2.65</div>
                 <div class="stat-label">Peak Level</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-value red">0.67</div>
+                <div class="stat-label">Starting Level</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value blue">3+ yrs</div>
+                <div class="stat-label">Journey Length</div>
+            </div>
+        </div>
+        
+        <div class="journey-text">
+            <h3>📖 The Journey</h3>
+            <p>
+                Started playing padel in <strong>October 2022</strong> as a complete beginner. 
+                The initial months were challenging — my level actually dropped from 1.4 to <strong>0.67</strong> 
+                as the algorithm adjusted to my true skill level. But persistence paid off!
+            </p>
+            <p style="margin-top: 1rem;">
+                Through consistent practice (500+ matches!), the improvement became clear. 
+                Key breakthroughs happened in <strong>late 2024</strong> when the level jumped past 2.0, 
+                and again in <strong>January 2026</strong> reaching an all-time high of <strong>2.65</strong>.
+            </p>
         </div>
         
         <div class="chart-container">
-            <h2 class="chart-title">📈 Level Evolution</h2>
+            <h2 class="chart-title">📈 Level Evolution (2022-2026)</h2>
             <div class="chart-wrapper">
                 <canvas id="levelChart"></canvas>
             </div>
         </div>
         
         <div class="milestones">
-            <h2 class="chart-title">🏆 Milestones</h2>
+            <h2 class="chart-title">🏆 Key Milestones</h2>
             <div class="milestone-list">
                 <div class="milestone">
                     <span class="milestone-icon">🎯</span>
                     <div class="milestone-content">
-                        <div class="milestone-title">Journey Begins</div>
-                        <div class="milestone-date">September 30, 2025</div>
+                        <div class="milestone-title">First Match</div>
+                        <div class="milestone-date">October 6, 2022</div>
                     </div>
-                    <div class="milestone-level">2.30</div>
+                    <div class="milestone-level">1.40</div>
                 </div>
                 <div class="milestone">
-                    <span class="milestone-icon">📈</span>
+                    <span class="milestone-icon">📉</span>
                     <div class="milestone-content">
-                        <div class="milestone-title">Breaking 2.4</div>
-                        <div class="milestone-date">October 22, 2025</div>
+                        <div class="milestone-title">The Valley (Lowest Point)</div>
+                        <div class="milestone-date">April 2023</div>
                     </div>
-                    <div class="milestone-level">2.39</div>
+                    <div class="milestone-level" style="color: var(--accent-red)">0.67</div>
                 </div>
                 <div class="milestone">
-                    <span class="milestone-icon">🎄</span>
+                    <span class="milestone-icon">🔄</span>
                     <div class="milestone-content">
-                        <div class="milestone-title">Holiday Surge</div>
-                        <div class="milestone-date">December 30, 2025</div>
+                        <div class="milestone-title">Back to Start Level</div>
+                        <div class="milestone-date">September 2023</div>
                     </div>
-                    <div class="milestone-level">2.49</div>
+                    <div class="milestone-level">1.40</div>
+                </div>
+                <div class="milestone">
+                    <span class="milestone-icon">⭐</span>
+                    <div class="milestone-content">
+                        <div class="milestone-title">Breaking 2.0!</div>
+                        <div class="milestone-date">October 2024</div>
+                    </div>
+                    <div class="milestone-level">2.00</div>
                 </div>
                 <div class="milestone">
                     <span class="milestone-icon">🚀</span>
@@ -254,7 +254,7 @@
                         <div class="milestone-title">All-Time High!</div>
                         <div class="milestone-date">January 9, 2026</div>
                     </div>
-                    <div class="milestone-level">2.65</div>
+                    <div class="milestone-level" style="color: var(--accent-green)">2.65</div>
                 </div>
             </div>
         </div>
@@ -267,6 +267,339 @@
     
     <script>
         const data = [
+            {date: "2022-10-06", level: 1.4},
+            {date: "2022-10-12", level: 1.4},
+            {date: "2022-10-21", level: 1.4},
+            {date: "2022-11-02", level: 1.4},
+            {date: "2022-11-08", level: 1.4},
+            {date: "2022-11-15", level: 1.29},
+            {date: "2022-11-16", level: 1.19},
+            {date: "2022-12-02", level: 1.02},
+            {date: "2022-12-14", level: 1.02},
+            {date: "2023-01-24", level: 0.84},
+            {date: "2023-01-31", level: 0.84},
+            {date: "2023-02-14", level: 0.84},
+            {date: "2023-02-21", level: 0.84},
+            {date: "2023-03-07", level: 0.7},
+            {date: "2023-03-22", level: 0.7},
+            {date: "2023-03-28", level: 0.7},
+            {date: "2023-04-12", level: 0.7},
+            {date: "2023-04-18", level: 0.7},
+            {date: "2023-04-26", level: 0.67},
+            {date: "2023-05-02", level: 0.67},
+            {date: "2023-05-10", level: 0.67},
+            {date: "2023-05-23", level: 0.85},
+            {date: "2023-05-31", level: 0.85},
+            {date: "2023-06-03", level: 1.13},
+            {date: "2023-06-07", level: 1.29},
+            {date: "2023-06-18", level: 1.29},
+            {date: "2023-06-20", level: 1.36},
+            {date: "2023-06-25", level: 1.36},
+            {date: "2023-06-28", level: 1.36},
+            {date: "2023-08-08", level: 1.36},
+            {date: "2023-08-17", level: 1.36},
+            {date: "2023-08-23", level: 1.36},
+            {date: "2023-08-24", level: 1.36},
+            {date: "2023-08-26", level: 1.57},
+            {date: "2023-08-28", level: 1.57},
+            {date: "2023-08-30", level: 1.57},
+            {date: "2023-08-31", level: 1.57},
+            {date: "2023-09-02", level: 1.57},
+            {date: "2023-09-05", level: 1.36},
+            {date: "2023-09-06", level: 1.9},
+            {date: "2023-09-07", level: 1.57},
+            {date: "2023-09-13", level: 1.99},
+            {date: "2023-09-14", level: 1.57},
+            {date: "2023-09-18", level: 1.9},
+            {date: "2023-09-19", level: 1.99},
+            {date: "2023-09-20", level: 2.12},
+            {date: "2023-09-21", level: 2.12},
+            {date: "2023-09-26", level: 2.12},
+            {date: "2023-09-29", level: 1.96},
+            {date: "2023-10-02", level: 1.96},
+            {date: "2023-10-04", level: 2.22},
+            {date: "2023-10-06", level: 2.07},
+            {date: "2023-10-10", level: 2.1},
+            {date: "2023-10-11", level: 2.1},
+            {date: "2023-10-12", level: 2.1},
+            {date: "2023-10-13", level: 2.1},
+            {date: "2023-10-16", level: 2.1},
+            {date: "2023-10-18", level: 2.1},
+            {date: "2023-10-19", level: 2.1},
+            {date: "2023-10-21", level: 1.96},
+            {date: "2023-10-24", level: 2.12},
+            {date: "2023-10-26", level: 2.12},
+            {date: "2023-10-31", level: 2.1},
+            {date: "2023-11-01", level: 2.1},
+            {date: "2023-11-02", level: 2.02},
+            {date: "2023-11-03", level: 2.12},
+            {date: "2023-11-06", level: 2.12},
+            {date: "2023-11-07", level: 2.12},
+            {date: "2023-11-09", level: 2.12},
+            {date: "2023-11-10", level: 2.12},
+            {date: "2023-11-15", level: 2.21},
+            {date: "2023-11-17", level: 2.12},
+            {date: "2023-11-18", level: 2.21},
+            {date: "2023-11-29", level: 2.21},
+            {date: "2023-11-30", level: 2.21},
+            {date: "2023-12-01", level: 2.21},
+            {date: "2023-12-04", level: 2.21},
+            {date: "2023-12-06", level: 2.21},
+            {date: "2023-12-07", level: 2.21},
+            {date: "2023-12-13", level: 2.21},
+            {date: "2023-12-14", level: 2.21},
+            {date: "2023-12-15", level: 2.21},
+            {date: "2023-12-18", level: 2.21},
+            {date: "2023-12-19", level: 2.21},
+            {date: "2023-12-21", level: 2.21},
+            {date: "2023-12-31", level: 2.12},
+            {date: "2024-01-09", level: 2.12},
+            {date: "2024-01-12", level: 2.12},
+            {date: "2024-01-16", level: 2.23},
+            {date: "2024-01-19", level: 2.12},
+            {date: "2024-01-22", level: 2.12},
+            {date: "2024-01-23", level: 2.12},
+            {date: "2024-01-25", level: 2.12},
+            {date: "2024-01-26", level: 2.23},
+            {date: "2024-01-29", level: 2.23},
+            {date: "2024-01-30", level: 2.23},
+            {date: "2024-02-01", level: 2.14},
+            {date: "2024-02-02", level: 2.23},
+            {date: "2024-02-06", level: 2.14},
+            {date: "2024-02-07", level: 2.23},
+            {date: "2024-02-08", level: 2.23},
+            {date: "2024-02-12", level: 2.14},
+            {date: "2024-02-13", level: 2.14},
+            {date: "2024-02-14", level: 2.14},
+            {date: "2024-02-15", level: 2.14},
+            {date: "2024-02-20", level: 2.19},
+            {date: "2024-02-22", level: 2.22},
+            {date: "2024-02-23", level: 2.22},
+            {date: "2024-02-26", level: 2.26},
+            {date: "2024-02-27", level: 2.17},
+            {date: "2024-02-28", level: 2.22},
+            {date: "2024-02-29", level: 2.22},
+            {date: "2024-03-04", level: 2.22},
+            {date: "2024-03-06", level: 2.22},
+            {date: "2024-03-07", level: 2.22},
+            {date: "2024-03-08", level: 2.29},
+            {date: "2024-03-10", level: 2.47},
+            {date: "2024-03-11", level: 2.47},
+            {date: "2024-03-13", level: 2.47},
+            {date: "2024-03-14", level: 2.4},
+            {date: "2024-03-15", level: 2.22},
+            {date: "2024-03-20", level: 2.4},
+            {date: "2024-03-22", level: 2.4},
+            {date: "2024-03-25", level: 2.47},
+            {date: "2024-03-27", level: 2.36},
+            {date: "2024-03-28", level: 2.29},
+            {date: "2024-03-31", level: 2.37},
+            {date: "2024-04-02", level: 2.36},
+            {date: "2024-04-04", level: 2.36},
+            {date: "2024-04-07", level: 2.37},
+            {date: "2024-04-08", level: 2.36},
+            {date: "2024-05-22", level: 2.37},
+            {date: "2024-05-28", level: 2.37},
+            {date: "2024-05-29", level: 2.37},
+            {date: "2024-05-31", level: 2.37},
+            {date: "2024-06-01", level: 2.37},
+            {date: "2024-06-04", level: 2.37},
+            {date: "2024-06-05", level: 2.37},
+            {date: "2024-06-06", level: 2.37},
+            {date: "2024-06-07", level: 2.37},
+            {date: "2024-06-10", level: 2.37},
+            {date: "2024-06-11", level: 2.37},
+            {date: "2024-06-12", level: 2.37},
+            {date: "2024-06-13", level: 2.19},
+            {date: "2024-06-17", level: 2.37},
+            {date: "2024-06-19", level: 2.28},
+            {date: "2024-06-20", level: 2.28},
+            {date: "2024-06-24", level: 2.12},
+            {date: "2024-06-25", level: 2.19},
+            {date: "2024-06-26", level: 2.12},
+            {date: "2024-06-27", level: 2.12},
+            {date: "2024-07-01", level: 2.12},
+            {date: "2024-07-02", level: 2.12},
+            {date: "2024-07-03", level: 2.06},
+            {date: "2024-07-04", level: 2.06},
+            {date: "2024-07-05", level: 2.06},
+            {date: "2024-07-09", level: 2.06},
+            {date: "2024-07-11", level: 1.92},
+            {date: "2024-07-12", level: 1.92},
+            {date: "2024-07-13", level: 1.87},
+            {date: "2024-07-15", level: 1.92},
+            {date: "2024-07-17", level: 1.92},
+            {date: "2024-07-18", level: 1.92},
+            {date: "2024-07-22", level: 1.92},
+            {date: "2024-07-23", level: 1.87},
+            {date: "2024-07-24", level: 1.87},
+            {date: "2024-07-25", level: 1.87},
+            {date: "2024-07-26", level: 1.87},
+            {date: "2024-07-28", level: 2.0},
+            {date: "2024-07-30", level: 2.0},
+            {date: "2024-07-31", level: 1.87},
+            {date: "2024-08-01", level: 1.87},
+            {date: "2024-08-05", level: 1.87},
+            {date: "2024-08-06", level: 2.0},
+            {date: "2024-08-07", level: 1.93},
+            {date: "2024-08-08", level: 1.93},
+            {date: "2024-08-11", level: 2.0},
+            {date: "2024-08-12", level: 2.08},
+            {date: "2024-08-13", level: 2.0},
+            {date: "2024-08-20", level: 2.0},
+            {date: "2024-08-22", level: 1.97},
+            {date: "2024-08-26", level: 2.01},
+            {date: "2024-08-28", level: 2.01},
+            {date: "2024-09-10", level: 2.02},
+            {date: "2024-09-12", level: 2.02},
+            {date: "2024-09-16", level: 2.02},
+            {date: "2024-09-19", level: 2.02},
+            {date: "2024-09-21", level: 1.9},
+            {date: "2024-09-24", level: 1.9},
+            {date: "2024-09-26", level: 1.9},
+            {date: "2024-09-29", level: 1.92},
+            {date: "2024-10-01", level: 1.9},
+            {date: "2024-10-02", level: 1.87},
+            {date: "2024-10-03", level: 1.9},
+            {date: "2024-10-04", level: 1.87},
+            {date: "2024-10-05", level: 1.87},
+            {date: "2024-10-08", level: 1.9},
+            {date: "2024-10-09", level: 1.9},
+            {date: "2024-10-10", level: 1.92},
+            {date: "2024-10-14", level: 1.87},
+            {date: "2024-10-15", level: 1.87},
+            {date: "2024-10-17", level: 1.87},
+            {date: "2024-10-19", level: 1.87},
+            {date: "2024-10-21", level: 1.87},
+            {date: "2024-10-22", level: 1.87},
+            {date: "2024-10-23", level: 2.0},
+            {date: "2024-10-24", level: 2.0},
+            {date: "2024-10-25", level: 2.06},
+            {date: "2024-10-27", level: 2.0},
+            {date: "2024-10-29", level: 1.87},
+            {date: "2024-10-30", level: 1.91},
+            {date: "2024-10-31", level: 1.91},
+            {date: "2024-11-01", level: 1.96},
+            {date: "2024-11-04", level: 2.0},
+            {date: "2024-11-06", level: 2.06},
+            {date: "2024-11-11", level: 2.02},
+            {date: "2024-11-12", level: 1.96},
+            {date: "2024-11-13", level: 1.96},
+            {date: "2024-11-15", level: 1.98},
+            {date: "2024-11-18", level: 1.98},
+            {date: "2024-11-20", level: 2.13},
+            {date: "2024-11-22", level: 2.02},
+            {date: "2024-11-25", level: 2.02},
+            {date: "2024-11-26", level: 2.02},
+            {date: "2024-11-27", level: 2.13},
+            {date: "2024-11-29", level: 2.02},
+            {date: "2024-12-02", level: 2.09},
+            {date: "2024-12-06", level: 2.13},
+            {date: "2024-12-09", level: 2.09},
+            {date: "2024-12-10", level: 2.09},
+            {date: "2024-12-13", level: 2.15},
+            {date: "2024-12-17", level: 2.11},
+            {date: "2024-12-18", level: 2.15},
+            {date: "2024-12-20", level: 2.19},
+            {date: "2025-01-06", level: 2.19},
+            {date: "2025-01-17", level: 2.19},
+            {date: "2025-01-20", level: 2.19},
+            {date: "2025-01-21", level: 2.12},
+            {date: "2025-01-23", level: 2.12},
+            {date: "2025-01-27", level: 2.12},
+            {date: "2025-01-29", level: 2.12},
+            {date: "2025-02-07", level: 2.12},
+            {date: "2025-02-13", level: 2.1},
+            {date: "2025-02-17", level: 2.1},
+            {date: "2025-02-22", level: 2.08},
+            {date: "2025-02-24", level: 2.08},
+            {date: "2025-02-28", level: 2.1},
+            {date: "2025-03-03", level: 2.08},
+            {date: "2025-03-04", level: 2.08},
+            {date: "2025-03-11", level: 2.08},
+            {date: "2025-03-16", level: 2.08},
+            {date: "2025-03-18", level: 2.08},
+            {date: "2025-03-21", level: 2.08},
+            {date: "2025-03-25", level: 2.08},
+            {date: "2025-03-27", level: 2.08},
+            {date: "2025-03-28", level: 2.08},
+            {date: "2025-04-01", level: 2.08},
+            {date: "2025-04-03", level: 2.08},
+            {date: "2025-04-04", level: 2.08},
+            {date: "2025-04-07", level: 2.02},
+            {date: "2025-04-08", level: 2.08},
+            {date: "2025-04-10", level: 2.08},
+            {date: "2025-04-13", level: 2.1},
+            {date: "2025-04-15", level: 2.02},
+            {date: "2025-04-21", level: 2.08},
+            {date: "2025-04-22", level: 2.1},
+            {date: "2025-04-23", level: 2.15},
+            {date: "2025-04-26", level: 2.18},
+            {date: "2025-04-28", level: 2.18},
+            {date: "2025-04-30", level: 2.18},
+            {date: "2025-05-02", level: 2.18},
+            {date: "2025-05-04", level: 2.18},
+            {date: "2025-05-08", level: 2.18},
+            {date: "2025-05-10", level: 2.26},
+            {date: "2025-05-13", level: 2.2},
+            {date: "2025-05-15", level: 2.26},
+            {date: "2025-05-18", level: 2.3},
+            {date: "2025-05-19", level: 2.2},
+            {date: "2025-05-20", level: 2.2},
+            {date: "2025-05-22", level: 2.3},
+            {date: "2025-05-23", level: 2.29},
+            {date: "2025-05-27", level: 2.33},
+            {date: "2025-06-17", level: 2.33},
+            {date: "2025-06-19", level: 2.33},
+            {date: "2025-06-20", level: 2.33},
+            {date: "2025-06-24", level: 2.33},
+            {date: "2025-06-26", level: 2.37},
+            {date: "2025-06-27", level: 2.37},
+            {date: "2025-07-01", level: 2.33},
+            {date: "2025-07-03", level: 2.22},
+            {date: "2025-07-08", level: 2.22},
+            {date: "2025-07-10", level: 2.34},
+            {date: "2025-07-11", level: 2.2},
+            {date: "2025-07-12", level: 2.2},
+            {date: "2025-07-13", level: 2.18},
+            {date: "2025-07-15", level: 2.22},
+            {date: "2025-07-16", level: 2.2},
+            {date: "2025-07-17", level: 2.2},
+            {date: "2025-07-20", level: 2.2},
+            {date: "2025-07-21", level: 2.24},
+            {date: "2025-07-22", level: 2.24},
+            {date: "2025-07-23", level: 2.24},
+            {date: "2025-07-24", level: 2.23},
+            {date: "2025-07-25", level: 2.24},
+            {date: "2025-07-28", level: 2.24},
+            {date: "2025-07-29", level: 2.28},
+            {date: "2025-07-30", level: 2.24},
+            {date: "2025-08-01", level: 2.28},
+            {date: "2025-08-10", level: 2.25},
+            {date: "2025-08-11", level: 2.25},
+            {date: "2025-08-12", level: 2.28},
+            {date: "2025-08-14", level: 2.28},
+            {date: "2025-08-15", level: 2.28},
+            {date: "2025-08-18", level: 2.28},
+            {date: "2025-08-19", level: 2.25},
+            {date: "2025-08-20", level: 2.25},
+            {date: "2025-08-22", level: 2.25},
+            {date: "2025-08-25", level: 2.3},
+            {date: "2025-08-26", level: 2.3},
+            {date: "2025-08-27", level: 2.3},
+            {date: "2025-08-28", level: 2.32},
+            {date: "2025-08-29", level: 2.32},
+            {date: "2025-08-31", level: 2.32},
+            {date: "2025-09-01", level: 2.32},
+            {date: "2025-09-02", level: 2.32},
+            {date: "2025-09-04", level: 2.32},
+            {date: "2025-09-05", level: 2.32},
+            {date: "2025-09-09", level: 2.32},
+            {date: "2025-09-10", level: 2.27},
+            {date: "2025-09-11", level: 2.32},
+            {date: "2025-09-21", level: 2.3},
+            {date: "2025-09-28", level: 2.3},
+            {date: "2025-09-29", level: 2.3},
             {date: "2025-09-30", level: 2.3},
             {date: "2025-10-02", level: 2.3},
             {date: "2025-10-03", level: 2.3},
@@ -285,19 +618,31 @@
             {date: "2025-11-03", level: 2.32},
             {date: "2025-11-04", level: 2.32},
             {date: "2025-11-05", level: 2.29},
+            {date: "2025-11-11", level: 2.29},
+            {date: "2025-11-12", level: 2.31},
             {date: "2025-11-13", level: 2.29},
+            {date: "2025-11-14", level: 2.31},
+            {date: "2025-11-16", level: 2.3},
             {date: "2025-11-18", level: 2.31},
             {date: "2025-11-20", level: 2.31},
+            {date: "2025-11-23", level: 2.38},
             {date: "2025-11-25", level: 2.31},
             {date: "2025-11-27", level: 2.3},
+            {date: "2025-11-28", level: 2.34},
             {date: "2025-12-03", level: 2.36},
             {date: "2025-12-04", level: 2.34},
             {date: "2025-12-08", level: 2.38},
             {date: "2025-12-09", level: 2.38},
+            {date: "2025-12-14", level: 2.4},
             {date: "2025-12-15", level: 2.36},
-            {date: "2025-12-16", level: 2.36},
+            {date: "2025-12-16", level: 2.37},
+            {date: "2025-12-17", level: 2.4},
             {date: "2025-12-18", level: 2.36},
+            {date: "2025-12-19", level: 2.4},
+            {date: "2025-12-28", level: 2.49},
             {date: "2025-12-30", level: 2.49},
+            {date: "2025-12-31", level: 2.49},
+            {date: "2026-01-02", level: 2.49},
             {date: "2026-01-06", level: 2.49},
             {date: "2026-01-07", level: 2.49},
             {date: "2026-01-08", level: 2.54},
@@ -312,8 +657,11 @@
             {date: "2026-01-30", level: 2.55},
             {date: "2026-02-02", level: 2.55},
             {date: "2026-02-03", level: 2.55},
+            {date: "2026-02-04", level: 2.55},
             {date: "2026-02-09", level: 2.55},
             {date: "2026-02-12", level: 2.55},
+            {date: "2026-02-24", level: 2.55},
+            {date: "2026-02-26", level: 2.61},
         ];
         
         const ctx = document.getElementById('levelChart').getContext('2d');
@@ -330,6 +678,11 @@
         const intercept = (sumY - slope * sumX) / n;
         const trendData = xValues.map(x => slope * x + intercept);
         
+        // Create gradient
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(88, 166, 255, 0.3)');
+        gradient.addColorStop(1, 'rgba(88, 166, 255, 0)');
+        
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -339,13 +692,12 @@
                         label: 'Level',
                         data: data.map(d => d.level),
                         borderColor: '#58a6ff',
-                        backgroundColor: 'rgba(88, 166, 255, 0.1)',
+                        backgroundColor: gradient,
                         fill: true,
                         tension: 0.3,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#fff',
+                        pointRadius: 2,
+                        pointBackgroundColor: '#58a6ff',
                         pointBorderColor: '#58a6ff',
-                        pointBorderWidth: 2,
                         pointHoverRadius: 6,
                     },
                     {
@@ -362,14 +714,9 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                interaction: {
-                    intersect: false,
-                    mode: 'index',
-                },
+                interaction: { intersect: false, mode: 'index' },
                 plugins: {
-                    legend: {
-                        labels: { color: '#8b949e' }
-                    },
+                    legend: { labels: { color: '#8b949e' } },
                     tooltip: {
                         backgroundColor: '#161b22',
                         borderColor: '#30363d',
@@ -380,34 +727,23 @@
                             title: (items) => {
                                 const date = new Date(items[0].label);
                                 return date.toLocaleDateString('en-US', { 
-                                    weekday: 'short', 
-                                    year: 'numeric', 
-                                    month: 'short', 
-                                    day: 'numeric' 
+                                    weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' 
                                 });
                             },
-                            label: (item) => {
-                                if (item.datasetIndex === 0) {
-                                    return `Level: ${item.raw.toFixed(2)}`;
-                                }
-                                return null;
-                            }
+                            label: (item) => item.datasetIndex === 0 ? `Level: ${item.raw.toFixed(2)}` : null
                         }
                     }
                 },
                 scales: {
                     x: {
                         type: 'time',
-                        time: {
-                            unit: 'month',
-                            displayFormats: { month: 'MMM yyyy' }
-                        },
+                        time: { unit: 'quarter', displayFormats: { quarter: 'MMM yyyy' } },
                         grid: { color: 'rgba(48, 54, 61, 0.5)' },
-                        ticks: { color: '#8b949e' }
+                        ticks: { color: '#8b949e', maxTicksLimit: 12 }
                     },
                     y: {
-                        min: 2.1,
-                        max: 2.8,
+                        min: 0,
+                        max: 3,
                         grid: { color: 'rgba(48, 54, 61, 0.5)' },
                         ticks: { color: '#8b949e' }
                     }
