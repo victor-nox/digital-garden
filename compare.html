@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎾 Chart Vergleich</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #30363d;
+            --text: #f0f6fc;
+            --muted: #8b949e;
+            --blue: #58a6ff;
+            --green: #238636;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 2rem; }
+        h1 { text-align: center; margin-bottom: 0.5rem; }
+        .subtitle { text-align: center; color: var(--muted); margin-bottom: 2rem; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 1400px; margin: 0 auto; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+        .card h2 { font-size: 1.1rem; margin-bottom: 0.25rem; color: var(--blue); }
+        .card .lib { font-size: 0.75rem; color: var(--muted); margin-bottom: 1rem; }
+        .chart-container { height: 280px; position: relative; }
+        @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+        .loading { color: var(--muted); text-align: center; padding: 4rem; }
+    </style>
+</head>
+<body>
+    <h1>🎾 Chart Library Vergleich</h1>
+    <p class="subtitle">Gleiche Daten, 4 verschiedene Libraries</p>
+    
+    <div class="grid">
+        <div class="card">
+            <h2>1. Chart.js</h2>
+            <p class="lib">Straight lines (tension: 0)</p>
+            <div class="chart-container"><canvas id="chartjs"></canvas></div>
+        </div>
+        
+        <div class="card">
+            <h2>2. ApexCharts</h2>
+            <p class="lib">Modern, smooth animations</p>
+            <div class="chart-container" id="apex"></div>
+        </div>
+        
+        <div class="card">
+            <h2>3. Lightweight Charts</h2>
+            <p class="lib">TradingView style</p>
+            <div class="chart-container" id="lightweight"></div>
+        </div>
+        
+        <div class="card">
+            <h2>4. ECharts</h2>
+            <p class="lib">Feature-rich, stepped line</p>
+            <div class="chart-container" id="echarts"></div>
+        </div>
+    </div>
+    
+    <script>
+        const SUPABASE_URL = 'https://wlcxgdxpzbiqbazfvtsu.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsY3hnZHhwemJpcWJhemZ2dHN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk2NjA0NTQsImV4cCI6MjA1NTIzNjQ1NH0.XH6OMnjO4jNzwMD7YvlYT7XhOwd11LqXkW5Uri6CKMA';
+        
+        async function loadData() {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/padel_matches?select=match_date,level&order=match_date.asc`, {
+                headers: { 'apikey': SUPABASE_KEY }
+            });
+            return await res.json();
+        }
+        
+        async function init() {
+            const raw = await loadData();
+            const data = raw.filter(d => d.level);
+            
+            // === 1. Chart.js ===
+            const ctx1 = document.getElementById('chartjs').getContext('2d');
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.match_date),
+                    datasets: [{
+                        label: 'Level',
+                        data: data.map(d => d.level),
+                        borderColor: '#58a6ff',
+                        backgroundColor: 'rgba(88,166,255,0.1)',
+                        fill: true,
+                        tension: 0,
+                        pointRadius: 2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { type: 'time', time: { unit: 'month' }, grid: { color: '#30363d' }, ticks: { color: '#8b949e' } },
+                        y: { grid: { color: '#30363d' }, ticks: { color: '#8b949e' } }
+                    }
+                }
+            });
+            
+            // === 2. ApexCharts ===
+            const apexData = data.map(d => ({ x: new Date(d.match_date).getTime(), y: d.level }));
+            new ApexCharts(document.getElementById('apex'), {
+                chart: { type: 'area', height: 280, background: 'transparent', toolbar: { show: false }, zoom: { enabled: true } },
+                series: [{ name: 'Level', data: apexData }],
+                stroke: { curve: 'straight', width: 2 },
+                colors: ['#58a6ff'],
+                fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05 } },
+                dataLabels: { enabled: false },
+                xaxis: { type: 'datetime', labels: { style: { colors: '#8b949e' } }, axisBorder: { color: '#30363d' } },
+                yaxis: { labels: { style: { colors: '#8b949e' } } },
+                grid: { borderColor: '#30363d' },
+                tooltip: { theme: 'dark' }
+            }).render();
+            
+            // === 3. Lightweight Charts ===
+            const lwContainer = document.getElementById('lightweight');
+            const lwChart = LightweightCharts.createChart(lwContainer, {
+                width: lwContainer.clientWidth,
+                height: 280,
+                layout: { background: { type: 'solid', color: 'transparent' }, textColor: '#8b949e' },
+                grid: { vertLines: { color: '#30363d' }, horzLines: { color: '#30363d' } },
+                timeScale: { borderColor: '#30363d' },
+            });
+            const areaSeries = lwChart.addAreaSeries({
+                lineColor: '#58a6ff',
+                topColor: 'rgba(88,166,255,0.4)',
+                bottomColor: 'rgba(88,166,255,0.05)',
+                lineWidth: 2,
+            });
+            areaSeries.setData(data.map(d => ({ time: d.match_date, value: d.level })));
+            lwChart.timeScale().fitContent();
+            
+            // === 4. ECharts ===
+            const ecChart = echarts.init(document.getElementById('echarts'));
+            ecChart.setOption({
+                backgroundColor: 'transparent',
+                tooltip: { trigger: 'axis' },
+                xAxis: { 
+                    type: 'category', 
+                    data: data.map(d => d.match_date),
+                    axisLine: { lineStyle: { color: '#30363d' } },
+                    axisLabel: { color: '#8b949e', formatter: v => v.slice(0,7) }
+                },
+                yAxis: { 
+                    type: 'value',
+                    axisLine: { lineStyle: { color: '#30363d' } },
+                    axisLabel: { color: '#8b949e' },
+                    splitLine: { lineStyle: { color: '#30363d' } }
+                },
+                series: [{
+                    data: data.map(d => d.level),
+                    type: 'line',
+                    step: 'end',
+                    areaStyle: { color: 'rgba(88,166,255,0.15)' },
+                    lineStyle: { color: '#58a6ff', width: 2 },
+                    itemStyle: { color: '#58a6ff' },
+                    symbol: 'circle',
+                    symbolSize: 4
+                }],
+                grid: { left: 50, right: 20, top: 20, bottom: 40 }
+            });
+            
+            // Resize handling
+            window.addEventListener('resize', () => {
+                lwChart.resize();
+                ecChart.resize();
+            });
+        }
+        
+        init();
+    </script>
+</body>
+</html>
