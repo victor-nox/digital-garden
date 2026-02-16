@@ -203,6 +203,54 @@
         .partner-meta { font-size: 0.75rem; color: var(--text-secondary); }
         .partner-games { font-weight: 600; color: var(--accent-blue); }
         
+        /* Upcoming Matches */
+        .upcoming-list { max-height: 280px; overflow-y: auto; }
+        .upcoming-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--accent-green);
+        }
+        .upcoming-date {
+            min-width: 70px;
+            text-align: center;
+            margin-right: 1rem;
+        }
+        .upcoming-day { font-size: 1.5rem; font-weight: 700; color: var(--accent-blue); }
+        .upcoming-month { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; }
+        .upcoming-info { flex: 1; }
+        .upcoming-time { font-weight: 600; font-size: 0.95rem; }
+        .upcoming-venue { font-size: 0.75rem; color: var(--text-secondary); }
+        .upcoming-players { font-size: 0.75rem; color: var(--accent-cyan); margin-top: 2px; }
+        .upcoming-empty { color: var(--text-secondary); font-size: 0.85rem; padding: 1rem; text-align: center; }
+        .loading-small { color: var(--text-secondary); font-size: 0.85rem; padding: 1rem; text-align: center; }
+        
+        /* Synergy List */
+        .synergy-list { max-height: 280px; overflow-y: auto; }
+        .synergy-item {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 0.75rem;
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            margin-bottom: 0.5rem;
+        }
+        .synergy-name { flex: 1; font-weight: 500; font-size: 0.85rem; }
+        .synergy-stats { display: flex; gap: 0.75rem; align-items: center; }
+        .synergy-winrate {
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+        .synergy-winrate.good { background: var(--accent-green); color: white; }
+        .synergy-winrate.mid { background: var(--accent-yellow); color: #000; }
+        .synergy-winrate.bad { background: var(--accent-red); color: white; }
+        .synergy-games { font-size: 0.75rem; color: var(--text-secondary); }
+        
         /* Bar Chart small */
         .bar-chart { height: 200px; }
         
@@ -389,10 +437,24 @@
                     </div>
                 </div>
                 
+                <!-- Upcoming Matches -->
+                <div class="card card-third">
+                    <div class="card-title">📅 Nächste Spiele</div>
+                    <div class="upcoming-list" id="upcomingList">
+                        <div class="loading-small">Lade...</div>
+                    </div>
+                </div>
+                
                 <!-- Top Partners -->
-                <div class="card card-half">
-                    <div class="card-title">👥 Top Spielpartner</div>
+                <div class="card card-third">
+                    <div class="card-title">👥 Top Partner</div>
                     <div class="partner-list" id="partnerList"></div>
+                </div>
+                
+                <!-- Partner Synergy -->
+                <div class="card card-third">
+                    <div class="card-title">🤝 Synergy</div>
+                    <div class="synergy-list" id="synergyList"></div>
                 </div>
                 
                 <!-- Games per Month -->
@@ -617,6 +679,90 @@
             }).join('');
         }
         
+        // Partner Synergy (win rate analysis)
+        function renderSynergy(data) {
+            const synergy = {};
+            
+            data.forEach(m => {
+                const players = m.players || [];
+                const results = m.results || [];
+                if (players.length !== 4 || results.length === 0) return;
+                
+                // Find Dom's position and team
+                let domIndex = players.findIndex(p => p.user_id === DOM_USER_ID);
+                if (domIndex === -1) return;
+                
+                // Team assignment: players 0-1 = team "0", players 2-3 = team "1"
+                const domTeam = domIndex < 2 ? "0" : "1";
+                const partnerIndex = domIndex < 2 ? (domIndex === 0 ? 1 : 0) : (domIndex === 2 ? 3 : 2);
+                const partner = players[partnerIndex];
+                
+                if (!partner || !partner.name) return;
+                
+                // Calculate sets won
+                let domTeamSets = 0, oppTeamSets = 0;
+                results.forEach(set => {
+                    const scores = set.scores || [];
+                    if (scores.length !== 2) return;
+                    const domScore = scores.find(s => s.team_id === domTeam)?.score || 0;
+                    const oppScore = scores.find(s => s.team_id !== domTeam)?.score || 0;
+                    if (domScore > oppScore) domTeamSets++;
+                    else if (oppScore > domScore) oppTeamSets++;
+                });
+                
+                // Determine match result
+                const result = domTeamSets > oppTeamSets ? 'win' : domTeamSets < oppTeamSets ? 'loss' : 'draw';
+                
+                if (!synergy[partner.user_id]) {
+                    synergy[partner.user_id] = { name: partner.name, wins: 0, losses: 0, draws: 0, games: 0 };
+                }
+                synergy[partner.user_id].games++;
+                if (result === 'win') synergy[partner.user_id].wins++;
+                else if (result === 'loss') synergy[partner.user_id].losses++;
+                else synergy[partner.user_id].draws++;
+            });
+            
+            // Sort by games played, then by win rate
+            const sorted = Object.values(synergy)
+                .filter(p => p.games >= 3) // Min 3 games for meaningful stats
+                .sort((a, b) => {
+                    const rateA = a.wins / a.games;
+                    const rateB = b.wins / b.games;
+                    if (Math.abs(rateA - rateB) > 0.1) return rateB - rateA;
+                    return b.games - a.games;
+                })
+                .slice(0, 8);
+            
+            if (sorted.length === 0) {
+                document.getElementById('synergyList').innerHTML = '<div class="upcoming-empty">Nicht genug Daten</div>';
+                return;
+            }
+            
+            document.getElementById('synergyList').innerHTML = sorted.map(p => {
+                const winRate = Math.round((p.wins / p.games) * 100);
+                const rateClass = winRate >= 60 ? 'good' : winRate >= 40 ? 'mid' : 'bad';
+                return `
+                    <div class="synergy-item">
+                        <div class="synergy-name">${p.name}</div>
+                        <div class="synergy-stats">
+                            <span class="synergy-games">${p.wins}W/${p.losses}L</span>
+                            <span class="synergy-winrate ${rateClass}">${winRate}%</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Upcoming matches placeholder (loaded separately)
+        function renderUpcoming() {
+            // For now, show static message - will be populated via API
+            document.getElementById('upcomingList').innerHTML = `
+                <div class="upcoming-empty">
+                    🔄 Sync via <a href="https://playtomic.io" target="_blank" style="color: var(--accent-blue);">Playtomic</a>
+                </div>
+            `;
+        }
+        
         // Monthly Chart
         function renderMonthlyChart(data) {
             const months = {};
@@ -838,7 +984,9 @@
                 renderStatsHero(allData);
                 renderLevelChart(allData);
                 renderHeatmap(allData);
+                renderUpcoming();
                 renderPartners(allData);
+                renderSynergy(allData);
                 renderMonthlyChart(allData);
                 renderWinLoss(allData);
                 renderDayOfWeek(allData);
