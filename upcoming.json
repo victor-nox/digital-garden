@@ -1,0 +1,44 @@
+{
+  "updated_at": "2026-02-16T21:12:05.304097",
+  "matches": [
+    {
+      "match_id": "629b6588-b76a-45f7-86ba-f7435df443d1",
+      "date": "2026-02-24",
+      "time": "16:30",
+      "venue": "Social Padel Club - Allschwil",
+      "players": [
+        {
+          "name": "Dome",
+          "level": 2.55,
+          "user_id": "3288476"
+        }
+      ]
+    },
+    {
+      "match_id": "41c10763-bd8e-4f15-9377-49e9a968a51e",
+      "date": "2026-02-26",
+      "time": "16:30",
+      "venue": "Social Padel Club - Allschwil",
+      "players": [
+        {
+          "name": "Dome",
+          "level": 2.61,
+          "user_id": "3288476"
+        }
+      ]
+    },
+    {
+      "match_id": "28e813d1-3d8e-4119-b6ab-05aeb417c157",
+      "date": "2026-03-02",
+      "time": "19:00",
+      "venue": "Social Padel Club - Allschwil",
+      "players": [
+        {
+          "name": "Dome",
+          "level": 2.61,
+          "user_id": "3288476"
+        }
+      ]
+    }
+  ]
+}

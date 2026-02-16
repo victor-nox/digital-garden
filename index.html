@@ -753,14 +753,45 @@
             }).join('');
         }
         
-        // Upcoming matches placeholder (loaded separately)
-        function renderUpcoming() {
-            // For now, show static message - will be populated via API
-            document.getElementById('upcomingList').innerHTML = `
-                <div class="upcoming-empty">
-                    🔄 Sync via <a href="https://playtomic.io" target="_blank" style="color: var(--accent-blue);">Playtomic</a>
-                </div>
-            `;
+        // Upcoming matches from synced JSON
+        async function renderUpcoming() {
+            try {
+                const res = await fetch('./upcoming.json?' + Date.now());
+                const data = await res.json();
+                const matches = data.matches || [];
+                
+                if (matches.length === 0) {
+                    document.getElementById('upcomingList').innerHTML = '<div class="upcoming-empty">Keine Spiele geplant</div>';
+                    return;
+                }
+                
+                const months = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+                
+                document.getElementById('upcomingList').innerHTML = matches.slice(0, 5).map(m => {
+                    const d = new Date(m.date);
+                    const day = d.getDate();
+                    const month = months[d.getMonth()];
+                    const playerNames = m.players.filter(p => p.name).map(p => p.name).join(', ') || 'TBD';
+                    const playerCount = m.players.length;
+                    const needsPlayers = playerCount < 4 ? `<span style="color:var(--accent-orange)">(${4-playerCount} frei)</span>` : '';
+                    
+                    return `
+                        <div class="upcoming-item">
+                            <div class="upcoming-date">
+                                <div class="upcoming-day">${day}</div>
+                                <div class="upcoming-month">${month}</div>
+                            </div>
+                            <div class="upcoming-info">
+                                <div class="upcoming-time">${m.time} Uhr ${needsPlayers}</div>
+                                <div class="upcoming-venue">${m.venue}</div>
+                                <div class="upcoming-players">${playerNames}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                document.getElementById('upcomingList').innerHTML = '<div class="upcoming-empty">Sync pending...</div>';
+            }
         }
         
         // Monthly Chart
