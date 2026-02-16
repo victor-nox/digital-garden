@@ -65,7 +65,7 @@
     
     <script>
         const SUPABASE_URL = 'https://wlcxgdxpzbiqbazfvtsu.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsY3hnZHhwemJpcWJhemZ2dHN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk2NjA0NTQsImV4cCI6MjA1NTIzNjQ1NH0.XH6OMnjO4jNzwMD7YvlYT7XhOwd11LqXkW5Uri6CKMA';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsY3hnZHhwemJpcWJhemZ2dHN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMTY4NTEsImV4cCI6MjA4NjY5Mjg1MX0.u-8kWxdIDZI_1O9XMT-2-WtgDvB7vlY7Lx3EMIXPHvU';
         
         async function loadData() {
             const res = await fetch(`${SUPABASE_URL}/rest/v1/padel_matches?select=match_date,level&order=match_date.asc`, {
