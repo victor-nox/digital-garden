@@ -785,7 +785,15 @@
         
         async function loadContentForLanguage(lang) {
             const files = contentFiles[lang] || contentFiles.de;
-            const baseUrl = window.location.href.replace(/\/[^\/]*$/, '/');
+            // Fix URL for mobile - ensure trailing slash
+            let baseUrl = window.location.href.split('?')[0].split('#')[0];
+            if (!baseUrl.endsWith('/')) {
+                if (baseUrl.endsWith('.html')) {
+                    baseUrl = baseUrl.replace(/\/[^\/]*$/, '/');
+                } else {
+                    baseUrl = baseUrl + '/';
+                }
+            }
             
             for (const [id, file] of Object.entries(files)) {
                 const containerId = `${id.replace('-', '-')}-subsections`;
@@ -793,8 +801,8 @@
                 
                 try {
                     // Use absolute URL for mobile compatibility
-                    const url = baseUrl + file;
-                    console.log('Loading:', url);
+                    const url = new URL(file, baseUrl).href;
+                    console.log('Base:', baseUrl, 'File:', file, 'URL:', url);
                     
                     const res = await fetch(url, {
                         method: 'GET',
