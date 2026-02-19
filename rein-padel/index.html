@@ -785,18 +785,52 @@
         
         async function loadContentForLanguage(lang) {
             const files = contentFiles[lang] || contentFiles.de;
+            const baseUrl = window.location.href.replace(/\/[^\/]*$/, '/');
             
             for (const [id, file] of Object.entries(files)) {
+                const containerId = `${id.replace('-', '-')}-subsections`;
+                const container = document.getElementById(containerId);
+                
                 try {
-                    const res = await fetch(file);
-                    if (!res.ok) throw new Error('Not found');
+                    // Use absolute URL for mobile compatibility
+                    const url = baseUrl + file;
+                    console.log('Loading:', url);
+                    
+                    const res = await fetch(url, {
+                        method: 'GET',
+                        cache: 'no-cache',
+                        headers: { 'Accept': 'text/plain, text/markdown, */*' }
+                    });
+                    
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
                     const md = await res.text();
                     
+                    if (!md || md.length < 50) throw new Error('Empty content');
+                    
                     const sections = parseIntoSections(md);
-                    const containerId = `${id.replace('-', '-')}-subsections`;
                     renderSubsections(containerId, sections, id);
                 } catch (e) {
-                    console.log(`Error loading ${file}:`, e);
+                    console.error(`Error loading ${file}:`, e);
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="subsection">
+                                <div class="subsection-header">
+                                    <div class="subsection-title">
+                                        <span class="emoji">⚠️</span>
+                                        ${state.lang === 'fr' ? 'Erreur de chargement' : 'Ladefehler'}
+                                    </div>
+                                </div>
+                                <div class="subsection-body">
+                                    <p style="color:var(--muted)">
+                                        ${state.lang === 'fr' ? 'Impossible de charger le contenu. Essayez de recharger la page.' : 'Inhalt konnte nicht geladen werden. Bitte Seite neu laden.'}
+                                    </p>
+                                    <p style="color:var(--muted);font-size:0.8rem;margin-top:1rem;">
+                                        Debug: ${file} - ${e.message}
+                                    </p>
+                                </div>
+                            </div>
+                        `;
+                    }
                 }
             }
         }
