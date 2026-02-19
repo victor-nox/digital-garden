@@ -17,8 +17,8 @@
             --accent-hover: #059669;
             --gemini: #4285f4;
             --claude: #ff6b35;
-            --vote-up: #22c55e;
-            --vote-down: #ef4444;
+            --star: #fbbf24;
+            --star-empty: #374151;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,20 +41,9 @@
             z-index: 1000;
         }
         
-        .password-box {
-            text-align: center;
-            padding: 3rem;
-        }
-        
-        .password-box h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .password-box p {
-            color: var(--muted);
-            margin-bottom: 2rem;
-        }
+        .password-box { text-align: center; padding: 3rem; }
+        .password-box h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+        .password-box p { color: var(--muted); margin-bottom: 2rem; }
         
         .password-input {
             display: flex;
@@ -73,10 +62,7 @@
             text-align: center;
         }
         
-        .password-input input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
+        .password-input input:focus { outline: none; border-color: var(--accent); }
         
         .password-input button {
             padding: 1rem 2rem;
@@ -90,27 +76,17 @@
             transition: all 0.2s;
         }
         
-        .password-input button:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-        
-        .password-error {
-            color: var(--vote-down);
-            margin-top: 1rem;
-            display: none;
-        }
+        .password-input button:hover { background: var(--accent-hover); transform: translateY(-2px); }
+        .password-error { color: #ef4444; margin-top: 1rem; display: none; }
         
         /* Main App */
-        #app {
-            display: none;
-        }
+        #app { display: none; }
         
         /* Header */
         header {
             position: sticky;
             top: 0;
-            background: rgba(10, 10, 10, 0.9);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             padding: 1rem 2rem;
@@ -123,18 +99,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-        }
-        
-        .header-controls {
-            display: flex;
+            flex-wrap: wrap;
             gap: 1rem;
-            align-items: center;
         }
+        
+        .logo { font-size: 1.5rem; font-weight: 800; }
+        .header-controls { display: flex; gap: 1rem; align-items: center; }
         
         .lang-toggle {
             display: flex;
@@ -154,16 +124,9 @@
             transition: all 0.2s;
         }
         
-        .lang-btn.active {
-            background: var(--accent);
-            color: white;
-        }
+        .lang-btn.active { background: var(--accent); color: white; }
         
-        /* Navigation */
-        nav {
-            display: flex;
-            gap: 0.5rem;
-        }
+        nav { display: flex; gap: 0.5rem; }
         
         .nav-btn {
             padding: 0.5rem 1rem;
@@ -176,16 +139,8 @@
             transition: all 0.2s;
         }
         
-        .nav-btn.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-        }
-        
-        .nav-btn:hover:not(.active) {
-            border-color: var(--accent);
-            color: var(--text);
-        }
+        .nav-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+        .nav-btn:hover:not(.active) { border-color: var(--accent); color: var(--text); }
         
         /* Content */
         main {
@@ -196,135 +151,133 @@
         
         .section-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
         
-        .section-header h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
+        .section-header h2 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .section-header p { color: var(--muted); font-size: 1rem; }
+        
+        /* AI Source Tabs */
+        .source-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
         
-        .section-header p {
-            color: var(--muted);
-            font-size: 1.1rem;
-        }
-        
-        /* Comparison Grid */
-        .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-        
-        @media (max-width: 900px) {
-            .comparison {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .proposal {
+        .source-tab {
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
             background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-        
-        .proposal-header {
-            padding: 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            border-bottom: 1px solid var(--border);
+            gap: 0.5rem;
         }
         
-        .proposal-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+        .source-tab.gemini.active { border-color: var(--gemini); background: rgba(66, 133, 244, 0.1); }
+        .source-tab.claude.active { border-color: var(--claude); background: rgba(255, 107, 53, 0.1); }
+        .source-tab:hover { transform: translateY(-2px); }
+        
+        .source-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
             font-weight: 800;
-        }
-        
-        .proposal.gemini .proposal-icon {
-            background: linear-gradient(135deg, var(--gemini), #34a853);
+            font-size: 0.8rem;
             color: white;
         }
         
-        .proposal.claude .proposal-icon {
-            background: linear-gradient(135deg, var(--claude), #ff9f1c);
-            color: white;
+        .source-tab.gemini .source-icon { background: var(--gemini); }
+        .source-tab.claude .source-icon { background: var(--claude); }
+        
+        /* Subsections */
+        .subsections { display: none; }
+        .subsections.active { display: block; }
+        
+        .subsection {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
         }
         
-        .proposal-title {
-            flex: 1;
+        .subsection-header {
+            padding: 1.25rem 1.5rem;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
         }
         
-        .proposal-title h3 {
-            font-size: 1.2rem;
+        .subsection-title {
+            font-size: 1.1rem;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
         
-        .proposal-title span {
+        .subsection-title .emoji { font-size: 1.3rem; }
+        
+        .subsection-toggle {
             color: var(--muted);
-            font-size: 0.85rem;
+            transition: transform 0.2s;
         }
         
-        .proposal-content {
+        .subsection.collapsed .subsection-toggle { transform: rotate(-90deg); }
+        .subsection.collapsed .subsection-body { display: none; }
+        
+        .subsection-body {
             padding: 1.5rem;
-            max-height: 500px;
-            overflow-y: auto;
+        }
+        
+        .subsection-content {
             font-size: 0.95rem;
             line-height: 1.8;
         }
         
-        .proposal-content h2, .proposal-content h3, .proposal-content h4 {
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
+        .subsection-content h3, .subsection-content h4 {
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
             color: var(--accent);
         }
         
-        .proposal-content h2:first-child, .proposal-content h3:first-child {
-            margin-top: 0;
-        }
+        .subsection-content h3:first-child, .subsection-content h4:first-child { margin-top: 0; }
         
-        .proposal-content ul, .proposal-content ol {
+        .subsection-content ul, .subsection-content ol {
             padding-left: 1.5rem;
             margin: 0.75rem 0;
         }
         
-        .proposal-content li {
-            margin: 0.5rem 0;
-        }
+        .subsection-content li { margin: 0.4rem 0; }
         
-        .proposal-content table {
+        .subsection-content table {
             width: 100%;
             border-collapse: collapse;
             margin: 1rem 0;
             font-size: 0.85rem;
         }
         
-        .proposal-content th, .proposal-content td {
+        .subsection-content th, .subsection-content td {
             border: 1px solid var(--border);
             padding: 0.5rem;
             text-align: left;
         }
         
-        .proposal-content th {
-            background: var(--bg);
-        }
-        
-        .proposal-content code {
-            background: var(--bg);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.85em;
-        }
-        
-        .proposal-content blockquote {
+        .subsection-content th { background: var(--bg); }
+        .subsection-content em { color: var(--accent); }
+        .subsection-content strong { color: var(--text); }
+        .subsection-content blockquote {
             border-left: 3px solid var(--accent);
             padding-left: 1rem;
             margin: 1rem 0;
@@ -332,60 +285,57 @@
             font-style: italic;
         }
         
-        .proposal-content em {
-            color: var(--accent);
-        }
-        
-        .proposal-content strong {
-            color: var(--text);
-        }
-        
-        /* Voting */
-        .proposal-footer {
+        /* Rating System */
+        .subsection-footer {
             padding: 1rem 1.5rem;
             background: var(--bg);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .rating-section {
             display: flex;
             align-items: center;
             gap: 1rem;
-            border-top: 1px solid var(--border);
         }
         
-        .vote-btn {
+        .rating-label {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        
+        .star-rating {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
+            gap: 4px;
+        }
+        
+        .star {
+            font-size: 1.5rem;
             cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
+            color: var(--star-empty);
+            transition: all 0.15s;
         }
         
-        .vote-btn:hover {
-            transform: translateY(-2px);
+        .star:hover, .star.active { color: var(--star); transform: scale(1.1); }
+        .star.hovered { color: var(--star); }
+        
+        .rating-avg {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-left: 0.5rem;
         }
         
-        .vote-btn.up:hover, .vote-btn.up.active {
-            background: var(--vote-up);
-            border-color: var(--vote-up);
+        .rating-avg strong {
+            color: var(--star);
+            font-size: 1rem;
         }
         
-        .vote-btn.down:hover, .vote-btn.down.active {
-            background: var(--vote-down);
-            border-color: var(--vote-down);
-        }
-        
-        .vote-count {
-            font-weight: 700;
-            min-width: 2rem;
-            text-align: center;
-        }
-        
-        .comment-btn {
-            margin-left: auto;
+        /* Comments */
+        .comment-toggle {
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -395,25 +345,20 @@
             border-radius: 8px;
             color: var(--muted);
             cursor: pointer;
+            font-size: 0.9rem;
             transition: all 0.2s;
         }
         
-        .comment-btn:hover {
-            color: var(--text);
-            border-color: var(--text);
-        }
+        .comment-toggle:hover { color: var(--text); border-color: var(--text); }
         
-        /* Comments Section */
         .comments-section {
             display: none;
-            padding: 1.5rem;
-            background: var(--bg);
+            padding: 1rem 1.5rem;
+            background: var(--card);
             border-top: 1px solid var(--border);
         }
         
-        .comments-section.open {
-            display: block;
-        }
+        .comments-section.open { display: block; }
         
         .comment-input {
             display: flex;
@@ -424,91 +369,49 @@
         .comment-input input {
             flex: 1;
             padding: 0.75rem 1rem;
-            background: var(--card);
+            background: var(--bg);
             border: 1px solid var(--border);
             border-radius: 8px;
             color: var(--text);
             font-size: 0.9rem;
         }
         
-        .comment-input input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
+        .comment-input input:focus { outline: none; border-color: var(--accent); }
         
         .comment-input button {
-            padding: 0.75rem 1.5rem;
+            padding: 0.75rem 1.25rem;
             background: var(--accent);
             border: none;
             border-radius: 8px;
             color: white;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
         }
         
-        .comment-input button:hover {
-            background: var(--accent-hover);
-        }
-        
-        .comments-list {
-            max-height: 200px;
-            overflow-y: auto;
-        }
+        .comments-list { max-height: 200px; overflow-y: auto; }
         
         .comment {
             padding: 0.75rem;
-            background: var(--card);
+            background: var(--bg);
             border-radius: 8px;
             margin-bottom: 0.5rem;
         }
         
-        .comment-text {
-            font-size: 0.9rem;
-        }
-        
-        .comment-meta {
-            font-size: 0.75rem;
-            color: var(--muted);
-            margin-top: 0.25rem;
-        }
+        .comment-text { font-size: 0.9rem; }
+        .comment-meta { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
         
         /* Section visibility */
-        .section {
-            display: none;
-        }
-        
-        .section.active {
-            display: block;
-        }
-        
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 4rem;
-            color: var(--muted);
-        }
+        .section { display: none; }
+        .section.active { display: block; }
         
         /* Mobile */
         @media (max-width: 768px) {
-            .header-content {
-                flex-wrap: wrap;
-                gap: 1rem;
-            }
-            
-            nav {
-                order: 3;
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .section-header h2 {
-                font-size: 1.75rem;
-            }
-            
-            .proposal-content {
-                max-height: 400px;
-            }
+            .header-content { flex-direction: column; }
+            nav { width: 100%; justify-content: center; flex-wrap: wrap; }
+            .section-header h2 { font-size: 1.5rem; }
+            .source-tabs { flex-direction: column; align-items: stretch; }
+            .source-tab { justify-content: center; }
+            .subsection-footer { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
@@ -551,54 +454,18 @@
             <section id="section-konzept" class="section active">
                 <div class="section-header">
                     <h2 data-de="📋 Drehkonzept & Output-Formate" data-fr="📋 Concept de tournage & Formats">📋 Drehkonzept & Output-Formate</h2>
-                    <p data-de="Vergleiche die Vorschläge für den Drehtag morgen" data-fr="Comparez les propositions pour le tournage de demain">Vergleiche die Vorschläge für den Drehtag morgen</p>
+                    <p data-de="Wähle eine AI-Quelle und bewerte die einzelnen Vorschläge" data-fr="Choisissez une source AI et évaluez les propositions">Wähle eine AI-Quelle und bewerte die einzelnen Vorschläge</p>
                 </div>
-                <div class="comparison">
-                    <div class="proposal gemini" data-id="konzept-gm">
-                        <div class="proposal-header">
-                            <div class="proposal-icon">GM</div>
-                            <div class="proposal-title">
-                                <h3>Gemini</h3>
-                                <span>Google AI</span>
-                            </div>
-                        </div>
-                        <div class="proposal-content" id="content-konzept-gm"></div>
-                        <div class="proposal-footer">
-                            <button class="vote-btn up" onclick="vote('konzept-gm', 1)">👍 <span class="vote-count" id="votes-konzept-gm-up">0</span></button>
-                            <button class="vote-btn down" onclick="vote('konzept-gm', -1)">👎 <span class="vote-count" id="votes-konzept-gm-down">0</span></button>
-                            <button class="comment-btn" onclick="toggleComments('konzept-gm')">💬 <span id="comments-count-konzept-gm">0</span></button>
-                        </div>
-                        <div class="comments-section" id="comments-konzept-gm">
-                            <div class="comment-input">
-                                <input type="text" id="comment-input-konzept-gm" placeholder="Kommentar hinzufügen...">
-                                <button onclick="addComment('konzept-gm')">Senden</button>
-                            </div>
-                            <div class="comments-list" id="comments-list-konzept-gm"></div>
-                        </div>
-                    </div>
-                    <div class="proposal claude" data-id="konzept-cl">
-                        <div class="proposal-header">
-                            <div class="proposal-icon">CL</div>
-                            <div class="proposal-title">
-                                <h3>Claude</h3>
-                                <span>Anthropic AI</span>
-                            </div>
-                        </div>
-                        <div class="proposal-content" id="content-konzept-cl"></div>
-                        <div class="proposal-footer">
-                            <button class="vote-btn up" onclick="vote('konzept-cl', 1)">👍 <span class="vote-count" id="votes-konzept-cl-up">0</span></button>
-                            <button class="vote-btn down" onclick="vote('konzept-cl', -1)">👎 <span class="vote-count" id="votes-konzept-cl-down">0</span></button>
-                            <button class="comment-btn" onclick="toggleComments('konzept-cl')">💬 <span id="comments-count-konzept-cl">0</span></button>
-                        </div>
-                        <div class="comments-section" id="comments-konzept-cl">
-                            <div class="comment-input">
-                                <input type="text" id="comment-input-konzept-cl" placeholder="Kommentar hinzufügen...">
-                                <button onclick="addComment('konzept-cl')">Senden</button>
-                            </div>
-                            <div class="comments-list" id="comments-list-konzept-cl"></div>
-                        </div>
-                    </div>
+                <div class="source-tabs">
+                    <button class="source-tab gemini active" data-source="gm" data-category="konzept">
+                        <span class="source-icon">GM</span> Gemini
+                    </button>
+                    <button class="source-tab claude" data-source="cl" data-category="konzept">
+                        <span class="source-icon">CL</span> Claude
+                    </button>
                 </div>
+                <div id="konzept-gm-subsections" class="subsections active"></div>
+                <div id="konzept-cl-subsections" class="subsections"></div>
             </section>
             
             <!-- Lucy Section -->
@@ -607,52 +474,16 @@
                     <h2 data-de="🎬 Lucy's Rolle" data-fr="🎬 Le rôle de Lucy">🎬 Lucy's Rolle</h2>
                     <p data-de="Die Co-Pilotin als zweite Erzählperspektive" data-fr="La co-pilote comme deuxième perspective narrative">Die Co-Pilotin als zweite Erzählperspektive</p>
                 </div>
-                <div class="comparison">
-                    <div class="proposal gemini" data-id="lucy-gm">
-                        <div class="proposal-header">
-                            <div class="proposal-icon">GM</div>
-                            <div class="proposal-title">
-                                <h3>Gemini</h3>
-                                <span>Google AI</span>
-                            </div>
-                        </div>
-                        <div class="proposal-content" id="content-lucy-gm"></div>
-                        <div class="proposal-footer">
-                            <button class="vote-btn up" onclick="vote('lucy-gm', 1)">👍 <span class="vote-count" id="votes-lucy-gm-up">0</span></button>
-                            <button class="vote-btn down" onclick="vote('lucy-gm', -1)">👎 <span class="vote-count" id="votes-lucy-gm-down">0</span></button>
-                            <button class="comment-btn" onclick="toggleComments('lucy-gm')">💬 <span id="comments-count-lucy-gm">0</span></button>
-                        </div>
-                        <div class="comments-section" id="comments-lucy-gm">
-                            <div class="comment-input">
-                                <input type="text" id="comment-input-lucy-gm" placeholder="Kommentar hinzufügen...">
-                                <button onclick="addComment('lucy-gm')">Senden</button>
-                            </div>
-                            <div class="comments-list" id="comments-list-lucy-gm"></div>
-                        </div>
-                    </div>
-                    <div class="proposal claude" data-id="lucy-cl">
-                        <div class="proposal-header">
-                            <div class="proposal-icon">CL</div>
-                            <div class="proposal-title">
-                                <h3>Claude</h3>
-                                <span>Anthropic AI</span>
-                            </div>
-                        </div>
-                        <div class="proposal-content" id="content-lucy-cl"></div>
-                        <div class="proposal-footer">
-                            <button class="vote-btn up" onclick="vote('lucy-cl', 1)">👍 <span class="vote-count" id="votes-lucy-cl-up">0</span></button>
-                            <button class="vote-btn down" onclick="vote('lucy-cl', -1)">👎 <span class="vote-count" id="votes-lucy-cl-down">0</span></button>
-                            <button class="comment-btn" onclick="toggleComments('lucy-cl')">💬 <span id="comments-count-lucy-cl">0</span></button>
-                        </div>
-                        <div class="comments-section" id="comments-lucy-cl">
-                            <div class="comment-input">
-                                <input type="text" id="comment-input-lucy-cl" placeholder="Kommentar hinzufügen...">
-                                <button onclick="addComment('lucy-cl')">Senden</button>
-                            </div>
-                            <div class="comments-list" id="comments-list-lucy-cl"></div>
-                        </div>
-                    </div>
+                <div class="source-tabs">
+                    <button class="source-tab gemini active" data-source="gm" data-category="lucy">
+                        <span class="source-icon">GM</span> Gemini
+                    </button>
+                    <button class="source-tab claude" data-source="cl" data-category="lucy">
+                        <span class="source-icon">CL</span> Claude
+                    </button>
                 </div>
+                <div id="lucy-gm-subsections" class="subsections active"></div>
+                <div id="lucy-cl-subsections" class="subsections"></div>
             </section>
             
             <!-- Outdoor Section -->
@@ -661,52 +492,16 @@
                     <h2 data-de="🏔️ Outdoor Locations Nancy" data-fr="🏔️ Locations extérieures Nancy">🏔️ Outdoor Locations Nancy</h2>
                     <p data-de="Strategische Drehorte in der Stadt" data-fr="Lieux de tournage stratégiques en ville">Strategische Drehorte in der Stadt</p>
                 </div>
-                <div class="comparison">
-                    <div class="proposal gemini" data-id="outdoor-gm">
-                        <div class="proposal-header">
-                            <div class="proposal-icon">GM</div>
-                            <div class="proposal-title">
-                                <h3>Gemini</h3>
-                                <span>Google AI</span>
-                            </div>
-                        </div>
-                        <div class="proposal-content" id="content-outdoor-gm"></div>
-                        <div class="proposal-footer">
-                            <button class="vote-btn up" onclick="vote('outdoor-gm', 1)">👍 <span class="vote-count" id="votes-outdoor-gm-up">0</span></button>
-                            <button class="vote-btn down" onclick="vote('outdoor-gm', -1)">👎 <span class="vote-count" id="votes-outdoor-gm-down">0</span></button>
-                            <button class="comment-btn" onclick="toggleComments('outdoor-gm')">💬 <span id="comments-count-outdoor-gm">0</span></button>
-                        </div>
-                        <div class="comments-section" id="comments-outdoor-gm">
-                            <div class="comment-input">
-                                <input type="text" id="comment-input-outdoor-gm" placeholder="Kommentar hinzufügen...">
-                                <button onclick="addComment('outdoor-gm')">Senden</button>
-                            </div>
-                            <div class="comments-list" id="comments-list-outdoor-gm"></div>
-                        </div>
-                    </div>
-                    <div class="proposal claude" data-id="outdoor-cl">
-                        <div class="proposal-header">
-                            <div class="proposal-icon">CL</div>
-                            <div class="proposal-title">
-                                <h3>Claude</h3>
-                                <span>Anthropic AI</span>
-                            </div>
-                        </div>
-                        <div class="proposal-content" id="content-outdoor-cl"></div>
-                        <div class="proposal-footer">
-                            <button class="vote-btn up" onclick="vote('outdoor-cl', 1)">👍 <span class="vote-count" id="votes-outdoor-cl-up">0</span></button>
-                            <button class="vote-btn down" onclick="vote('outdoor-cl', -1)">👎 <span class="vote-count" id="votes-outdoor-cl-down">0</span></button>
-                            <button class="comment-btn" onclick="toggleComments('outdoor-cl')">💬 <span id="comments-count-outdoor-cl">0</span></button>
-                        </div>
-                        <div class="comments-section" id="comments-outdoor-cl">
-                            <div class="comment-input">
-                                <input type="text" id="comment-input-outdoor-cl" placeholder="Kommentar hinzufügen...">
-                                <button onclick="addComment('outdoor-cl')">Senden</button>
-                            </div>
-                            <div class="comments-list" id="comments-list-outdoor-cl"></div>
-                        </div>
-                    </div>
+                <div class="source-tabs">
+                    <button class="source-tab gemini active" data-source="gm" data-category="outdoor">
+                        <span class="source-icon">GM</span> Gemini
+                    </button>
+                    <button class="source-tab claude" data-source="cl" data-category="outdoor">
+                        <span class="source-icon">CL</span> Claude
+                    </button>
                 </div>
+                <div id="outdoor-gm-subsections" class="subsections active"></div>
+                <div id="outdoor-cl-subsections" class="subsections"></div>
             </section>
         </main>
     </div>
@@ -721,22 +516,18 @@
         let sbClient = null;
         let supabaseEnabled = false;
         
-        // Initialize Supabase (delayed to not block password check)
         function initSupabase() {
             try {
                 if (window.supabase && window.supabase.createClient) {
                     sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
                     supabaseEnabled = true;
-                    console.log('Supabase connected');
                 }
-            } catch (e) {
-                console.log('Supabase not available, using localStorage');
-            }
+            } catch (e) { console.log('Supabase not available'); }
         }
         
-        // Local state
+        // State
         const state = {
-            votes: {},
+            ratings: {},
             comments: {},
             lang: 'de'
         };
@@ -764,62 +555,250 @@
         // Password check
         function checkPassword() {
             const input = document.getElementById('password');
-            if (!input) {
-                console.error('Password input not found');
-                return;
-            }
             const pw = input.value.toLowerCase().trim();
-            console.log('Password entered:', pw, 'Length:', pw.length);
             if (pw === 'vamos') {
                 document.getElementById('password-gate').style.display = 'none';
                 document.getElementById('app').style.display = 'block';
                 loadContent();
             } else {
                 document.getElementById('password-error').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('password-error').style.display = 'none';
-                }, 2000);
+                setTimeout(() => document.getElementById('password-error').style.display = 'none', 2000);
             }
         }
         
-        // Load markdown content
-        async function loadContent() {
-            // Initialize Supabase now that we're past the password
-            initSupabase();
+        // Parse markdown into sections
+        function parseIntoSections(markdown) {
+            const sections = [];
+            const lines = markdown.split('\n');
+            let currentSection = null;
+            let currentContent = [];
             
+            const emojiMap = {
+                '1': '1️⃣', '2': '2️⃣', '3': '3️⃣', '4': '4️⃣', '5': '5️⃣',
+                'A': '🅰️', 'B': '🅱️', 'C': '©️', 'D': '🇩',
+                'Teil': '📋', 'Part': '📋', 'Partie': '📋',
+                'Block': '📦', 'Format': '🎬', 'Shot': '📸', 'Spot': '📍',
+                'Szenario': '🎭', 'Scénario': '🎭'
+            };
+            
+            function getEmoji(title) {
+                for (const [key, emoji] of Object.entries(emojiMap)) {
+                    if (title.includes(key)) return emoji;
+                }
+                // Check for existing emoji
+                const emojiMatch = title.match(/[\u{1F300}-\u{1F9FF}]/u);
+                if (emojiMatch) return '';
+                return '📌';
+            }
+            
+            for (const line of lines) {
+                // Check for ## or ### headers as section breaks
+                const h2Match = line.match(/^##\s+(.+)$/);
+                const h3Match = line.match(/^###\s+(.+)$/);
+                
+                if (h2Match || h3Match) {
+                    // Save previous section
+                    if (currentSection) {
+                        currentSection.content = currentContent.join('\n');
+                        sections.push(currentSection);
+                    }
+                    
+                    const title = (h2Match || h3Match)[1];
+                    const emoji = getEmoji(title);
+                    
+                    currentSection = {
+                        title: title.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim(),
+                        emoji: emoji,
+                        level: h2Match ? 2 : 3
+                    };
+                    currentContent = [];
+                } else if (currentSection) {
+                    currentContent.push(line);
+                } else {
+                    // Content before first header - create intro section
+                    if (line.trim() && !currentSection) {
+                        currentSection = {
+                            title: state.lang === 'fr' ? 'Introduction' : 'Einleitung',
+                            emoji: '📖',
+                            level: 2
+                        };
+                        currentContent = [line];
+                    }
+                }
+            }
+            
+            // Save last section
+            if (currentSection) {
+                currentSection.content = currentContent.join('\n');
+                sections.push(currentSection);
+            }
+            
+            return sections;
+        }
+        
+        // Render subsections
+        function renderSubsections(containerId, sections, baseId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = sections.map((section, idx) => {
+                const sectionId = `${baseId}-${idx}`;
+                const rating = state.ratings[sectionId] || { sum: 0, count: 0 };
+                const avg = rating.count > 0 ? (rating.sum / rating.count).toFixed(1) : '-';
+                const comments = state.comments[sectionId] || [];
+                
+                return `
+                    <div class="subsection" data-id="${sectionId}">
+                        <div class="subsection-header" onclick="toggleSubsection('${sectionId}')">
+                            <div class="subsection-title">
+                                <span class="emoji">${section.emoji}</span>
+                                ${section.title}
+                            </div>
+                            <span class="subsection-toggle">▼</span>
+                        </div>
+                        <div class="subsection-body">
+                            <div class="subsection-content">${marked.parse(section.content || '')}</div>
+                        </div>
+                        <div class="subsection-footer">
+                            <div class="rating-section">
+                                <span class="rating-label">${state.lang === 'fr' ? 'Votre note:' : 'Deine Bewertung:'}</span>
+                                <div class="star-rating" data-id="${sectionId}">
+                                    ${[1,2,3,4,5].map(n => `
+                                        <span class="star" data-value="${n}" 
+                                              onclick="rate('${sectionId}', ${n})"
+                                              onmouseenter="hoverStars('${sectionId}', ${n})"
+                                              onmouseleave="unhoverStars('${sectionId}')">★</span>
+                                    `).join('')}
+                                </div>
+                                <span class="rating-avg">Ø <strong>${avg}</strong> ${rating.count > 0 ? `(${rating.count})` : ''}</span>
+                            </div>
+                            <button class="comment-toggle" onclick="toggleComments('${sectionId}')">
+                                💬 ${comments.length} ${state.lang === 'fr' ? 'Commentaires' : 'Kommentare'}
+                            </button>
+                        </div>
+                        <div class="comments-section" id="comments-${sectionId}">
+                            <div class="comment-input">
+                                <input type="text" id="comment-input-${sectionId}" 
+                                       placeholder="${state.lang === 'fr' ? 'Ajouter un commentaire...' : 'Kommentar hinzufügen...'}"
+                                       onkeypress="if(event.key==='Enter')addComment('${sectionId}')">
+                                <button onclick="addComment('${sectionId}')">${state.lang === 'fr' ? 'Envoyer' : 'Senden'}</button>
+                            </div>
+                            <div class="comments-list" id="comments-list-${sectionId}">
+                                ${comments.map(c => `
+                                    <div class="comment">
+                                        <div class="comment-text">${c.text}</div>
+                                        <div class="comment-meta">${c.time}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Toggle subsection
+        function toggleSubsection(id) {
+            const el = document.querySelector(`.subsection[data-id="${id}"]`);
+            if (el) el.classList.toggle('collapsed');
+        }
+        
+        // Star rating functions
+        function hoverStars(id, value) {
+            const container = document.querySelector(`.star-rating[data-id="${id}"]`);
+            if (!container) return;
+            container.querySelectorAll('.star').forEach((star, idx) => {
+                star.classList.toggle('hovered', idx < value);
+            });
+        }
+        
+        function unhoverStars(id) {
+            const container = document.querySelector(`.star-rating[data-id="${id}"]`);
+            if (!container) return;
+            container.querySelectorAll('.star').forEach(star => star.classList.remove('hovered'));
+        }
+        
+        function rate(id, value) {
+            if (!state.ratings[id]) state.ratings[id] = { sum: 0, count: 0 };
+            state.ratings[id].sum += value;
+            state.ratings[id].count++;
+            
+            // Update display
+            const avg = (state.ratings[id].sum / state.ratings[id].count).toFixed(1);
+            const section = document.querySelector(`.subsection[data-id="${id}"]`);
+            if (section) {
+                const avgEl = section.querySelector('.rating-avg');
+                avgEl.innerHTML = `Ø <strong>${avg}</strong> (${state.ratings[id].count})`;
+                
+                // Highlight selected stars
+                section.querySelectorAll('.star').forEach((star, idx) => {
+                    star.classList.toggle('active', idx < value);
+                });
+            }
+            
+            saveRating(id, value);
+        }
+        
+        // Comments
+        function toggleComments(id) {
+            const section = document.getElementById(`comments-${id}`);
+            if (section) section.classList.toggle('open');
+        }
+        
+        function addComment(id) {
+            const input = document.getElementById(`comment-input-${id}`);
+            const text = input.value.trim();
+            if (!text) return;
+            
+            if (!state.comments[id]) state.comments[id] = [];
+            state.comments[id].push({
+                text,
+                time: new Date().toLocaleString(state.lang)
+            });
+            
+            input.value = '';
+            
+            // Update display
+            const list = document.getElementById(`comments-list-${id}`);
+            const btn = document.querySelector(`.subsection[data-id="${id}"] .comment-toggle`);
+            if (list) {
+                list.innerHTML += `
+                    <div class="comment">
+                        <div class="comment-text">${text}</div>
+                        <div class="comment-meta">${new Date().toLocaleString(state.lang)}</div>
+                    </div>
+                `;
+            }
+            if (btn) {
+                btn.innerHTML = `💬 ${state.comments[id].length} ${state.lang === 'fr' ? 'Commentaires' : 'Kommentare'}`;
+            }
+            
+            saveComment(id, text);
+        }
+        
+        // Load content
+        async function loadContent() {
+            initSupabase();
+            await loadState();
             await loadContentForLanguage(state.lang);
         }
         
         async function loadContentForLanguage(lang) {
             const files = contentFiles[lang] || contentFiles.de;
+            
             for (const [id, file] of Object.entries(files)) {
                 try {
                     const res = await fetch(file);
-                    if (!res.ok) throw new Error('File not found');
+                    if (!res.ok) throw new Error('Not found');
                     const md = await res.text();
-                    document.getElementById(`content-${id}`).innerHTML = marked.parse(md);
+                    
+                    const sections = parseIntoSections(md);
+                    const containerId = `${id.replace('-', '-')}-subsections`;
+                    renderSubsections(containerId, sections, id);
                 } catch (e) {
-                    // Fallback to German if French not available
-                    if (lang !== 'de') {
-                        try {
-                            const fallback = contentFiles.de[id];
-                            const res = await fetch(fallback);
-                            const md = await res.text();
-                            document.getElementById(`content-${id}`).innerHTML = marked.parse(md) + '<p style="color:var(--muted);font-size:0.8rem;margin-top:1rem;">⚠️ Traduction française à venir</p>';
-                        } catch (e2) {
-                            document.getElementById(`content-${id}`).innerHTML = `<p style="color:var(--muted)">Contenu en cours de chargement...</p>`;
-                        }
-                    } else {
-                        document.getElementById(`content-${id}`).innerHTML = `<p style="color:var(--muted)">Inhalt wird geladen...</p>`;
-                    }
+                    console.log(`Error loading ${file}:`, e);
                 }
             }
-            
-            // Load votes/comments from Supabase or localStorage
-            await loadState();
-            
-            // Subscribe to realtime updates
-            subscribeToUpdates();
         }
         
         // Navigation
@@ -827,9 +806,24 @@
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
                 document.getElementById(`section-${btn.dataset.section}`).classList.add('active');
+            });
+        });
+        
+        // Source tabs
+        document.querySelectorAll('.source-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const category = tab.dataset.category;
+                const source = tab.dataset.source;
+                
+                // Update tab styles
+                document.querySelectorAll(`.source-tab[data-category="${category}"]`).forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show/hide subsections
+                document.querySelectorAll(`#section-${category} .subsections`).forEach(s => s.classList.remove('active'));
+                document.getElementById(`${category}-${source}-subsections`).classList.add('active');
             });
         });
         
@@ -847,187 +841,60 @@
             document.querySelectorAll('[data-de][data-fr]').forEach(el => {
                 el.textContent = el.dataset[state.lang];
             });
-            // Reload content for new language
             loadContentForLanguage(state.lang);
         }
         
-        // Voting
-        function vote(id, value) {
-            if (!state.votes[id]) state.votes[id] = { up: 0, down: 0 };
-            
-            const voteType = value > 0 ? 'up' : 'down';
-            state.votes[id][voteType]++;
-            
-            updateVoteDisplay(id);
-            saveVote(id, voteType);
-        }
-        
-        function updateVoteDisplay(id) {
-            const votes = state.votes[id] || { up: 0, down: 0 };
-            document.getElementById(`votes-${id}-up`).textContent = votes.up;
-            document.getElementById(`votes-${id}-down`).textContent = votes.down;
-        }
-        
-        // Comments
-        function toggleComments(id) {
-            const section = document.getElementById(`comments-${id}`);
-            section.classList.toggle('open');
-        }
-        
-        function addComment(id) {
-            const input = document.getElementById(`comment-input-${id}`);
-            const text = input.value.trim();
-            if (!text) return;
-            
-            if (!state.comments[id]) state.comments[id] = [];
-            state.comments[id].push({
-                text,
-                time: new Date().toLocaleString('de')
-            });
-            
-            input.value = '';
-            updateCommentsDisplay(id);
-            saveComment(id, text);
-        }
-        
-        function updateCommentsDisplay(id) {
-            const comments = state.comments[id] || [];
-            const list = document.getElementById(`comments-list-${id}`);
-            const count = document.getElementById(`comments-count-${id}`);
-            
-            count.textContent = comments.length;
-            list.innerHTML = comments.map(c => `
-                <div class="comment">
-                    <div class="comment-text">${c.text}</div>
-                    <div class="comment-meta">${c.time}</div>
-                </div>
-            `).join('');
-        }
-        
-        // State persistence with Supabase
-        async function saveVote(proposalId, voteType) {
+        // State persistence
+        async function saveRating(id, value) {
             if (supabaseEnabled && sbClient) {
                 try {
-                    await sbClient.from('votes').insert({ 
-                        proposal_id: proposalId, 
-                        vote_type: voteType 
-                    });
-                } catch (e) {
-                    console.log('Vote save error:', e);
-                }
+                    await sbClient.from('ratings').insert({ section_id: id, rating: value });
+                } catch (e) { console.log('Rating save error'); }
             }
             localStorage.setItem('rein-padel-state', JSON.stringify(state));
         }
         
-        async function saveComment(proposalId, text) {
+        async function saveComment(id, text) {
             if (supabaseEnabled && sbClient) {
                 try {
-                    await sbClient.from('comments').insert({ 
-                        proposal_id: proposalId, 
-                        text: text,
-                        author: 'User'
-                    });
-                } catch (e) {
-                    console.log('Comment save error:', e);
-                }
+                    await sbClient.from('comments').insert({ proposal_id: id, text });
+                } catch (e) { console.log('Comment save error'); }
             }
             localStorage.setItem('rein-padel-state', JSON.stringify(state));
         }
         
         async function loadState() {
-            // Try Supabase first
-            if (supabaseEnabled && sbClient) {
-                try {
-                    // Load votes
-                    const { data: votes } = await sbClient.from('votes').select('*');
-                    if (votes) {
-                        state.votes = {};
-                        votes.forEach(v => {
-                            if (!state.votes[v.proposal_id]) {
-                                state.votes[v.proposal_id] = { up: 0, down: 0 };
-                            }
-                            state.votes[v.proposal_id][v.vote_type]++;
-                        });
-                    }
-                    
-                    // Load comments
-                    const { data: comments } = await sbClient.from('comments').select('*').order('created_at', { ascending: true });
-                    if (comments) {
-                        state.comments = {};
-                        comments.forEach(c => {
-                            if (!state.comments[c.proposal_id]) {
-                                state.comments[c.proposal_id] = [];
-                            }
-                            state.comments[c.proposal_id].push({
-                                text: c.text,
-                                time: new Date(c.created_at).toLocaleString('de')
-                            });
-                        });
-                    }
-                    console.log('Loaded from Supabase');
-                } catch (e) {
-                    console.log('Supabase load error, using localStorage:', e);
-                    loadFromLocalStorage();
-                }
-            } else {
-                loadFromLocalStorage();
-            }
-            
-            // Update all displays
-            Object.keys(contentFiles).forEach(id => {
-                updateVoteDisplay(id);
-                updateCommentsDisplay(id);
-            });
-        }
-        
-        function loadFromLocalStorage() {
             const saved = localStorage.getItem('rein-padel-state');
             if (saved) {
                 const data = JSON.parse(saved);
-                state.votes = data.votes || {};
+                state.ratings = data.ratings || {};
                 state.comments = data.comments || {};
             }
-        }
-        
-        // Subscribe to realtime updates
-        function subscribeToUpdates() {
-            if (!supabaseEnabled || !supabase) return;
             
-            sbClient.channel('votes-changes')
-                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'votes' }, (payload) => {
-                    const v = payload.new;
-                    if (!state.votes[v.proposal_id]) {
-                        state.votes[v.proposal_id] = { up: 0, down: 0 };
+            if (supabaseEnabled && sbClient) {
+                try {
+                    const { data: ratings } = await sbClient.from('ratings').select('*');
+                    if (ratings) {
+                        ratings.forEach(r => {
+                            if (!state.ratings[r.section_id]) state.ratings[r.section_id] = { sum: 0, count: 0 };
+                            state.ratings[r.section_id].sum += r.rating;
+                            state.ratings[r.section_id].count++;
+                        });
                     }
-                    state.votes[v.proposal_id][v.vote_type]++;
-                    updateVoteDisplay(v.proposal_id);
-                })
-                .subscribe();
-            
-            sbClient.channel('comments-changes')
-                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments' }, (payload) => {
-                    const c = payload.new;
-                    if (!state.comments[c.proposal_id]) {
-                        state.comments[c.proposal_id] = [];
+                    
+                    const { data: comments } = await sbClient.from('comments').select('*').order('created_at');
+                    if (comments) {
+                        comments.forEach(c => {
+                            if (!state.comments[c.proposal_id]) state.comments[c.proposal_id] = [];
+                            state.comments[c.proposal_id].push({
+                                text: c.text,
+                                time: new Date(c.created_at).toLocaleString(state.lang)
+                            });
+                        });
                     }
-                    state.comments[c.proposal_id].push({
-                        text: c.text,
-                        time: new Date(c.created_at).toLocaleString('de')
-                    });
-                    updateCommentsDisplay(c.proposal_id);
-                })
-                .subscribe();
+                } catch (e) { console.log('State load from Supabase failed'); }
+            }
         }
-        
-        // Enter key on comments
-        document.querySelectorAll('.comment-input input').forEach(input => {
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    const id = input.id.replace('comment-input-', '');
-                    addComment(id);
-                }
-            });
-        });
     </script>
 </body>
 </html>
