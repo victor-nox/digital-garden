@@ -741,14 +741,24 @@
             lang: 'de'
         };
         
-        // Content files
+        // Content files by language
         const contentFiles = {
-            'konzept-gm': 'de_GM_Konzept.md',
-            'konzept-cl': 'de_CL_Konzept.md',
-            'lucy-gm': 'de_GM_Lucy.md',
-            'lucy-cl': 'de_CL_Lucy.md',
-            'outdoor-gm': 'de_GM_Outdoor.md',
-            'outdoor-cl': 'de_CL_Outdoor.md'
+            de: {
+                'konzept-gm': 'de_GM_Konzept.md',
+                'konzept-cl': 'de_CL_Konzept.md',
+                'lucy-gm': 'de_GM_Lucy.md',
+                'lucy-cl': 'de_CL_Lucy.md',
+                'outdoor-gm': 'de_GM_Outdoor.md',
+                'outdoor-cl': 'de_CL_Outdoor.md'
+            },
+            fr: {
+                'konzept-gm': 'fr_GM_Konzept.md',
+                'konzept-cl': 'fr_CL_Konzept.md',
+                'lucy-gm': 'fr_GM_Lucy.md',
+                'lucy-cl': 'fr_CL_Lucy.md',
+                'outdoor-gm': 'fr_GM_Outdoor.md',
+                'outdoor-cl': 'fr_CL_Outdoor.md'
+            }
         };
         
         // Password check
@@ -777,13 +787,31 @@
             // Initialize Supabase now that we're past the password
             initSupabase();
             
-            for (const [id, file] of Object.entries(contentFiles)) {
+            await loadContentForLanguage(state.lang);
+        }
+        
+        async function loadContentForLanguage(lang) {
+            const files = contentFiles[lang] || contentFiles.de;
+            for (const [id, file] of Object.entries(files)) {
                 try {
                     const res = await fetch(file);
+                    if (!res.ok) throw new Error('File not found');
                     const md = await res.text();
                     document.getElementById(`content-${id}`).innerHTML = marked.parse(md);
                 } catch (e) {
-                    document.getElementById(`content-${id}`).innerHTML = `<p style="color:var(--muted)">Inhalt wird geladen...</p>`;
+                    // Fallback to German if French not available
+                    if (lang !== 'de') {
+                        try {
+                            const fallback = contentFiles.de[id];
+                            const res = await fetch(fallback);
+                            const md = await res.text();
+                            document.getElementById(`content-${id}`).innerHTML = marked.parse(md) + '<p style="color:var(--muted);font-size:0.8rem;margin-top:1rem;">⚠️ Traduction française à venir</p>';
+                        } catch (e2) {
+                            document.getElementById(`content-${id}`).innerHTML = `<p style="color:var(--muted)">Contenu en cours de chargement...</p>`;
+                        }
+                    } else {
+                        document.getElementById(`content-${id}`).innerHTML = `<p style="color:var(--muted)">Inhalt wird geladen...</p>`;
+                    }
                 }
             }
             
@@ -819,6 +847,8 @@
             document.querySelectorAll('[data-de][data-fr]').forEach(el => {
                 el.textContent = el.dataset[state.lang];
             });
+            // Reload content for new language
+            loadContentForLanguage(state.lang);
         }
         
         // Voting
